@@ -7,6 +7,7 @@ public class Tile : MonoBehaviour
 {
     public int TileType;
     public int myIndex;
+    public bool isChecked = false;
 
     public void onClickOnTile()
     {

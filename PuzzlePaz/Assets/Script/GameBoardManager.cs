@@ -27,7 +27,7 @@ public class GameBoardManager : MonoBehaviour
         }
     }
 
-    int adjacentSimilarTiles = 0;
+
     int serachingType;
     List<GameObject> similarAdjacentTiles = new List<GameObject>();
 
@@ -38,7 +38,7 @@ public class GameBoardManager : MonoBehaviour
         //checks if adjacent tiles have the same type
         CheckAdjacentTile(index);
 
-        Debug.Log("Type: " + type + " index: " + index + " Adjacent Similar Tiles: " + adjacentSimilarTiles);
+        Debug.Log("Type: " + type + " index: " + index + " Adjacent Similar Tiles: " + similarAdjacentTiles.Count);
 
         if (similarAdjacentTiles.Count >= 2)
         {
@@ -49,6 +49,7 @@ public class GameBoardManager : MonoBehaviour
             foreach (GameObject adjacent in similarAdjacentTiles)
             {
                 adjacent.GetComponent<Tile>().TileType = Random.Range(0, tilesImage.Length);
+                adjacent.GetComponent<Tile>().isChecked = false;
                 adjacent.transform.GetChild(0).GetComponent<Image>().sprite = tilesImage[adjacent.GetComponent<Tile>().TileType];
             }
         }
@@ -68,23 +69,45 @@ public class GameBoardManager : MonoBehaviour
                 index + i < tileListSize && tileList[index + i].GetComponent<Tile>().TileType == serachingType;
                 i++)
         {
-            adjacentSimilarTiles++;
-            similarAdjacentTiles.Add(tileList[index + i]);
-            checkTopTile(index + i);
-            checkDownTile(index + i);
+            //check if we reached the boarder of the board
+            if (index + i + 1 % boardColCount == 0)
+            {
+                return;
+            }
+
+            if (tileList[index + i].GetComponent<Tile>().isChecked == false)
+            {
+                similarAdjacentTiles.Add(tileList[index + i]);
+                tileList[index + i].GetComponent<Tile>().isChecked = true;
+
+                checkTopTile(index + i);
+                checkDownTile(index + i);
+
+            }
         }
     }
 
     private void checkLeftTile(int index)
     {
         for (int i = -1;
-                index + i > tileListSize && tileList[index + i].GetComponent<Tile>().TileType == serachingType;
+                index + i >= 0 && tileList[index + i].GetComponent<Tile>().TileType == serachingType;
                 i--)
         {
-            adjacentSimilarTiles++;
-            similarAdjacentTiles.Add(tileList[index + i]);
-            checkTopTile(index + i);
-            checkDownTile(index + i);
+            //check if we reached the boarder of the board
+            if (index + i + 1 % boardColCount == 0)
+            {
+                return;
+            }
+
+            if (tileList[index + i].GetComponent<Tile>().isChecked == false)
+            {
+                similarAdjacentTiles.Add(tileList[index + i]);
+                tileList[index + i].GetComponent<Tile>().isChecked = true;
+
+                checkTopTile(index + i);
+                checkDownTile(index + i);
+
+            }
         }
     }
 
@@ -94,23 +117,45 @@ public class GameBoardManager : MonoBehaviour
                 index + i < tileListSize && tileList[index + i].GetComponent<Tile>().TileType == serachingType;
                 i += boardColCount)
         {
-            adjacentSimilarTiles++;
-            similarAdjacentTiles.Add(tileList[index + i]);
-            checkRightTile(index + i);
-            checkLeftTile(index + i);
+            //check if we reached the boarder of the board
+            if (index + i + 1 % boardColCount == 0)
+            {
+                return;
+            }
+
+            if (tileList[index + i].GetComponent<Tile>().isChecked == false)
+            {
+                similarAdjacentTiles.Add(tileList[index + i]);
+                tileList[index + i].GetComponent<Tile>().isChecked = true;
+
+                checkRightTile(index + i);
+                checkLeftTile(index + i);
+
+            }
         }
     }
 
     private void checkTopTile(int index)
     {
         for (int i = -boardColCount;
-      index + i > tileListSize && tileList[index + i].GetComponent<Tile>().TileType == serachingType;
+      index + i >= 0 && tileList[index + i].GetComponent<Tile>().TileType == serachingType;
       i -= boardColCount)
         {
-            adjacentSimilarTiles++;
-            similarAdjacentTiles.Add(tileList[index + i]);
-            checkRightTile(index + i);
-            checkLeftTile(index + i);
+            //check if we reached the boarder of the board
+            if (index + i + 1 % boardColCount == 0)
+            {
+                return;
+            }
+
+            if (tileList[index + i].GetComponent<Tile>().isChecked == false)
+            {
+                similarAdjacentTiles.Add(tileList[index + i]);
+                tileList[index + i].GetComponent<Tile>().isChecked = true;
+
+                checkRightTile(index + i);
+                checkLeftTile(index + i);
+
+            }
         }
     }
 }

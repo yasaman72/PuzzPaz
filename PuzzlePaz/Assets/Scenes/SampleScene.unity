@@ -564,9 +564,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilesImage:
-  - {fileID: 21300000, guid: eb7607978823cb54c9b14cfa165277fe, type: 3}
-  - {fileID: 21300002, guid: eb7607978823cb54c9b14cfa165277fe, type: 3}
+  - {fileID: 21300008, guid: eb7607978823cb54c9b14cfa165277fe, type: 3}
+  - {fileID: 21300010, guid: eb7607978823cb54c9b14cfa165277fe, type: 3}
   - {fileID: 21300004, guid: eb7607978823cb54c9b14cfa165277fe, type: 3}
+  - {fileID: 21300006, guid: eb7607978823cb54c9b14cfa165277fe, type: 3}
   tilePrefab: {fileID: 1751314264033168, guid: 62384182e3fd41641bbf9ef5fe1d2452, type: 2}
   tileHolderGameObject: {fileID: 1296291644}
   boardColCount: 6
