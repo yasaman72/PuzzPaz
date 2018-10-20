@@ -40,6 +40,8 @@ GameObject:
   - component: {fileID: 114171084100869536}
   - component: {fileID: 114602143640536648}
   - component: {fileID: 114942028842637212}
+  - component: {fileID: 114962096046326558}
+  - component: {fileID: 95216062762142372}
   m_Layer: 5
   m_Name: Tile
   m_TagString: Untagged
@@ -47,6 +49,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!95 &95216062762142372
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1751314264033168}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cdfd322bc1ebe1b489a609a7758e9de8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114171084100869536
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -166,6 +186,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileType: 0
   myIndex: 0
+  isChecked: 0
+--- !u!114 &114962096046326558
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1751314264033168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1679637790, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: 20
+  m_MinHeight: 20
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!222 &222497493509016258
 CanvasRenderer:
   m_ObjectHideFlags: 1

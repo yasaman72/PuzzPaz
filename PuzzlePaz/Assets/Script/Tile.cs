@@ -11,7 +11,7 @@ public class Tile : MonoBehaviour
 
     public void onClickOnTile()
     {
-        Debug.Log("Clcike on tile with index " + TileType);
+        //Debug.Log("Clcike on tile with type " + TileType);
         gameObject.transform.parent.GetComponent<GameBoardManager>().CheckClickedTile(TileType,myIndex);
     }
 }
