@@ -1,15 +1,15 @@
 fileFormatVersion: 2
-guid: eb7607978823cb54c9b14cfa165277fe
+guid: a58ad84a3ea277243aaf86717e5c29ec
 TextureImporter:
   fileIDToRecycleName:
     21300000: Tile Icons_0
     21300002: Tile Icons_1
-    21300004: Tile Icons_2
-    21300006: Tile Icons_3
+    21300004: tomato
+    21300006: orange
     21300008: Tile Icons_4
-    21300010: Tile Icons_5
+    21300010: corn
     21300012: Tile Icons_6
-    21300014: Tile Icons_7
+    21300014: onion
     21300016: Tile Icons_8
     21300018: Tile Icons_9
   externalObjects: {}
@@ -135,7 +135,7 @@ TextureImporter:
         width: 118
         height: 120
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -155,7 +155,7 @@ TextureImporter:
         width: 118
         height: 120
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -167,15 +167,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tile Icons_2
+      name: tomato
       rect:
         serializedVersion: 2
         x: 273
-        y: 144
+        y: 145
         width: 118
         height: 120
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -187,7 +187,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tile Icons_3
+      name: orange
       rect:
         serializedVersion: 2
         x: 402
@@ -195,7 +195,7 @@ TextureImporter:
         width: 118
         height: 120
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -215,7 +215,7 @@ TextureImporter:
         width: 118
         height: 120
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -227,7 +227,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tile Icons_5
+      name: corn
       rect:
         serializedVersion: 2
         x: 14
@@ -235,7 +235,7 @@ TextureImporter:
         width: 123
         height: 123
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -255,7 +255,7 @@ TextureImporter:
         width: 118
         height: 120
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -267,7 +267,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tile Icons_7
+      name: onion
       rect:
         serializedVersion: 2
         x: 272
@@ -275,7 +275,7 @@ TextureImporter:
         width: 123
         height: 123
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -295,7 +295,7 @@ TextureImporter:
         width: 118
         height: 120
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -315,7 +315,7 @@ TextureImporter:
         width: 118
         height: 120
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

@@ -6,12 +6,16 @@ using UnityEngine.UI;
 public class GameBoardManager : MonoBehaviour
 {
 
-    public Sprite[] tilesImage;
+    public Ingredient[] ingredients;
     public GameObject tilePrefab;
     public GameObject tileHolderGameObject;
     public int boardColCount;
     public int tileListSize;
     public float fallingSpeed;
+    public Text boardText;
+    [Space]
+    public GameLogicManager gameLogicManager;
+    public DishHandler dishHandler;
 
     [Header("Movement section")]
     public GameObject blockingObj;
@@ -20,16 +24,19 @@ public class GameBoardManager : MonoBehaviour
 
     void Start()
     {
+        boardText.text = "";
+
         for (int i = 0; i < tileListSize; i++)
         {
             tileList.Add(new GameObject());
             tileList[i] = Instantiate(tilePrefab, tileHolderGameObject.transform);
             tileList[i].GetComponent<Tile>().myIndex = i;
-            tileList[i].GetComponent<Tile>().TileType = Random.Range(0, tilesImage.Length);
+            tileList[i].GetComponent<Tile>().TileType = Random.Range(0, ingredients.Length);
             //tileList[i].GetComponent<Tile>().TileType = tileList[i].GetComponent<Tile>().TileType;
-            tileList[i].transform.GetChild(0).GetComponent<Image>().sprite = tilesImage[tileList[i].GetComponent<Tile>().TileType];
+            tileList[i].transform.GetChild(0).GetComponent<Image>().sprite = ingredients[tileList[i].GetComponent<Tile>().TileType].sprite;
             //tileList[i].GetComponent<Button>().onClick.AddListener(delegate { onClickOnTile(tileList[i]); });
         }
+        gameLogicManager.DestroyedConstructor(ingredients.Length);
 
         if (CheckForDeadend())
         {
@@ -38,7 +45,6 @@ public class GameBoardManager : MonoBehaviour
 
         blockingObj.SetActive(false);
     }
-
 
     public void CheckClickedTile(int type, int index)
     {
@@ -65,7 +71,10 @@ public class GameBoardManager : MonoBehaviour
             //sorting game object in the list based on their index
             SimilarTilesList.Sort(SortByIndex);
 
-            Debug.Log("Type: " + type + " index: " + index + " Similar Tiles: " + SimilarTilesList.Count);
+            //Debug.Log("Type: " + type + " index: " + index + " Similar Tiles: " + SimilarTilesList.Count);
+
+            gameLogicManager.CountDestroyedTilesByType(SimilarTilesList.Count, ingredients[type]);
+            dishHandler.ChangeRequirementsAmount(SimilarTilesList.Count, ingredients[type]);
 
             //Debug.Log("Sorted Selected Tiles indexes: ");
             //foreach (GameObject simGameObject in SimilarTilesList)
@@ -84,7 +93,7 @@ public class GameBoardManager : MonoBehaviour
             {
                 string message = string.Format("<color=red><b>-------------GOING TO SHUFFLE AFTER SOME SECONDS-------------</b></color>");
                 Debug.Log(message);
-                Invoke("ShuffleTiles", 200 * Time.deltaTime);
+                Invoke("ShuffleTiles", 100 * Time.deltaTime);
 
                 //ShuffleTiles();
             }
@@ -132,15 +141,15 @@ public class GameBoardManager : MonoBehaviour
 
             /////////////////////End of moving tiles animation/////////////////////
 
-            tileList[i].transform.GetChild(0).GetComponent<Image>().sprite = tilesImage[tileList[i].GetComponent<Tile>().TileType];
+            tileList[i].transform.GetChild(0).GetComponent<Image>().sprite = ingredients[tileList[i].GetComponent<Tile>().TileType].sprite;
 
 
             upperTiles.RemoveAt(0);
         }
 
         //setting type and sprite for the upper most tile in the list/ Insert a new tile from top
-        upperTiles[0].GetComponent<Tile>().TileType = Random.Range(0, tilesImage.Length);
-        upperTiles[0].transform.GetChild(0).GetComponent<Image>().sprite = tilesImage[upperTiles[0].GetComponent<Tile>().TileType];
+        upperTiles[0].GetComponent<Tile>().TileType = Random.Range(0, ingredients.Length);
+        upperTiles[0].transform.GetChild(0).GetComponent<Image>().sprite = ingredients[upperTiles[0].GetComponent<Tile>().TileType].sprite;
         upperTiles.RemoveAt(0);
     }
 
@@ -268,7 +277,7 @@ public class GameBoardManager : MonoBehaviour
     //returns true if there is a deadend
     private bool CheckForDeadend()
     {
-        Debug.Log("Check For Deadend!");
+        //Debug.Log("Check For Deadend!");
 
         foreach (GameObject tileObj in tileList)
         {
@@ -278,12 +287,14 @@ public class GameBoardManager : MonoBehaviour
                 return false;
             }
         }
+        boardText.text = "DEADEND! Board will shuffle!";
         Debug.Log("It's a DEADEND!");
         return true;
     }
 
     public void ShuffleTiles()
     {
+        boardText.text = "";
         Debug.Log("Shuffling!");
 
         //create a list of index of spaces that have not been changed
@@ -301,7 +312,7 @@ public class GameBoardManager : MonoBehaviour
 
             //give the new random index to the game object
             tileObj.GetComponent<Tile>().myIndex = emptySpaces[randomIndex];
-            tileObj.transform.GetChild(0).GetComponent<Image>().sprite = tilesImage[tileObj.GetComponent<Tile>().TileType];
+            tileObj.transform.GetChild(0).GetComponent<Image>().sprite = ingredients[tileObj.GetComponent<Tile>().TileType].sprite;
 
             //remove the index from indexes list
             emptySpaces.RemoveAt(randomIndex);
