@@ -11,6 +11,7 @@ public class GameBoardManager : MonoBehaviour
     public GameObject tileHolderGameObject;
     public int boardColCount;
     public int tileListSize;
+    public float fallingSpeed;
 
     [Header("Movement section")]
     public GameObject blockingObj;
@@ -110,7 +111,30 @@ public class GameBoardManager : MonoBehaviour
         for (int i = tileIndex; upperTiles.Count > 1; i -= boardColCount)
         {
             tileList[i].GetComponent<Tile>().TileType = tileList[i - boardColCount].GetComponent<Tile>().TileType;
+
+            /////////////////////moving tiles animation///////////////////////////
+            //tileHolderGameObject.GetComponent<GridLayoutGroup>().enabled = false;
+            //tileList[i].transform.GetChild(0).gameObject.SetActive(false);
+            //Vector3 ObjUpStartPos = tileList[i - boardColCount].transform.position;
+
+            //while (Vector2.Distance(tileList[i - boardColCount].transform.position, tileList[i].transform.position) > 0)
+            //{
+            //    tileList[i - boardColCount].transform.position =
+            //        Vector2.MoveTowards(tileList[i - boardColCount].transform.position,
+            //        tileList[i].transform.position,
+            //        fallingSpeed);
+            //    StartCoroutine(WaitForSomeSeconds(0.1f));
+            //}
+            //tileList[i - boardColCount].transform.position = ObjUpStartPos;
+
+            //tileList[i].transform.GetChild(0).gameObject.SetActive(true);
+            //tileHolderGameObject.GetComponent<GridLayoutGroup>().enabled = true;
+
+            /////////////////////End of moving tiles animation/////////////////////
+
             tileList[i].transform.GetChild(0).GetComponent<Image>().sprite = tilesImage[tileList[i].GetComponent<Tile>().TileType];
+
+
             upperTiles.RemoveAt(0);
         }
 
@@ -118,6 +142,12 @@ public class GameBoardManager : MonoBehaviour
         upperTiles[0].GetComponent<Tile>().TileType = Random.Range(0, tilesImage.Length);
         upperTiles[0].transform.GetChild(0).GetComponent<Image>().sprite = tilesImage[upperTiles[0].GetComponent<Tile>().TileType];
         upperTiles.RemoveAt(0);
+    }
+
+    IEnumerator WaitForSomeSeconds(float secondsToWait)
+    {
+        yield return new WaitForSeconds(secondsToWait);
+        yield return null;
     }
 
     private List<GameObject> ListOfSimilarAdjacentTilesObj(int index, int type)
