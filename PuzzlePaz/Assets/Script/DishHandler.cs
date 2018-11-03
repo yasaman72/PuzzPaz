@@ -75,11 +75,11 @@ public class DishHandler : MonoBehaviour
 
     public class RequirementsC
     {
-        [InspectorReadOnly]
+        //[InspectorReadOnly]
         public GameObject gameObject;
-        [InspectorReadOnly]
+        //[InspectorReadOnly]
         public Sprite sprite;
-        [InspectorReadOnly]
+        //[InspectorReadOnly]
         public int amount;
 
         public void SetAppearance()

@@ -80,7 +80,7 @@ public class DestroyedTiles
     public string name;
     [HideInInspector]
     public Ingredient ingredientType;
-    [InspectorReadOnly]
+    //[InspectorReadOnly]
     public int amount;
 
     public DestroyedTiles(int inIngredientIndex)

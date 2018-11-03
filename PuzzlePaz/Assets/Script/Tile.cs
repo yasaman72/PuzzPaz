@@ -8,6 +8,8 @@ public class Tile : MonoBehaviour
     public int TileType;
     public int myIndex;
     public bool isChecked = false;
+    public int upperSimilarTiles;
+    public int belowSimilarTiles;
 
     public void onClickOnTile()
     {

@@ -22,6 +22,8 @@ public class GameBoardManager : MonoBehaviour
 
     public List<GameObject> tileList = new List<GameObject>();
 
+    private IEnumerator coroutine;
+
     void Start()
     {
         boardText.text = "";
@@ -68,25 +70,52 @@ public class GameBoardManager : MonoBehaviour
         //check if there are 3 adjacent similar tiles
         if (SimilarTilesList.Count >= 3)
         {
-            //sorting game object in the list based on their index
-            SimilarTilesList.Sort(SortByIndex);
-
+            blockingObj.SetActive(true);
+            StartCoroutine("DisableBlocker");
             //Debug.Log("Type: " + type + " index: " + index + " Similar Tiles: " + SimilarTilesList.Count);
 
-            gameLogicManager.CountDestroyedTilesByType(SimilarTilesList.Count, ingredients[type]);
-            dishHandler.ChangeRequirementsAmount(SimilarTilesList.Count, ingredients[type]);
-
+            //sorting game object in the list based on their index
+            SimilarTilesList.Sort(SortDesByIndex);
             //Debug.Log("Sorted Selected Tiles indexes: ");
             //foreach (GameObject simGameObject in SimilarTilesList)
             //{
             //    Debug.Log((simGameObject.GetComponent<Tile>().myIndex));
             //}
 
+            gameLogicManager.CountDestroyedTilesByType(SimilarTilesList.Count, ingredients[type]);
+            dishHandler.ChangeRequirementsAmount(SimilarTilesList.Count, ingredients[type]);
+
             //changing the type and sprite of matching tiles
             foreach (GameObject adjacent in SimilarTilesList)
             {
-                MoveTiles(adjacent);
-                //adjacent.GetComponent<Animator>().SetTrigger("Destroy");
+                //check how many similar tiles are upon this one to set the right animation in the next step
+                int upperSimilarTiles = 0;
+                for (int i = adjacent.GetComponent<Tile>().myIndex - boardColCount;
+                    i >= 0 && adjacent.GetComponent<Tile>().TileType == tileList[i].GetComponent<Tile>().TileType;
+                    i -= boardColCount)
+                {
+                    upperSimilarTiles++;
+                }
+                adjacent.GetComponent<Tile>().upperSimilarTiles = upperSimilarTiles;
+
+                //check how many similar tiles are down this one to set the right animation in the next step
+                int belowSimilarTiles = 0;
+                for (int i = adjacent.GetComponent<Tile>().myIndex + boardColCount;
+                    i < tileListSize && adjacent.GetComponent<Tile>().TileType == tileList[i].GetComponent<Tile>().TileType;
+                    i += boardColCount)
+                {
+                    belowSimilarTiles++;
+                }
+                adjacent.GetComponent<Tile>().belowSimilarTiles = belowSimilarTiles;
+
+                Debug.Log("Index: " + adjacent.GetComponent<Tile>().myIndex + " | upper similar tiles amount: " + upperSimilarTiles
+                    + " | down similar tiles amount: " + belowSimilarTiles);
+            }
+
+            SimilarTilesList.Sort(SortAscByIndex);
+            foreach (GameObject adjacent in SimilarTilesList)
+            {
+                ChangeTiles(adjacent);
             }
 
             if (CheckForDeadend())
@@ -100,12 +129,17 @@ public class GameBoardManager : MonoBehaviour
         }
     }
 
-    static int SortByIndex(GameObject p1, GameObject p2)
+    static int SortAscByIndex(GameObject p1, GameObject p2)
     {
         return (p1.GetComponent<Tile>().myIndex).CompareTo(p2.GetComponent<Tile>().myIndex);
     }
 
-    private void MoveTiles(GameObject objectToChange)
+    static int SortDesByIndex(GameObject p1, GameObject p2)
+    {
+        return (p2.GetComponent<Tile>().myIndex).CompareTo(p1.GetComponent<Tile>().myIndex);
+    }
+
+    private void ChangeTiles(GameObject objectToChange)
     {
         List<GameObject> upperTiles = new List<GameObject>();
         int tileIndex = objectToChange.GetComponent<Tile>().myIndex;
@@ -121,28 +155,14 @@ public class GameBoardManager : MonoBehaviour
         {
             tileList[i].GetComponent<Tile>().TileType = tileList[i - boardColCount].GetComponent<Tile>().TileType;
 
-            /////////////////////moving tiles animation///////////////////////////
-            //tileHolderGameObject.GetComponent<GridLayoutGroup>().enabled = false;
-            //tileList[i].transform.GetChild(0).gameObject.SetActive(false);
-            //Vector3 ObjUpStartPos = tileList[i - boardColCount].transform.position;
-
-            //while (Vector2.Distance(tileList[i - boardColCount].transform.position, tileList[i].transform.position) > 0)
-            //{
-            //    tileList[i - boardColCount].transform.position =
-            //        Vector2.MoveTowards(tileList[i - boardColCount].transform.position,
-            //        tileList[i].transform.position,
-            //        fallingSpeed);
-            //    StartCoroutine(WaitForSomeSeconds(0.1f));
-            //}
-            //tileList[i - boardColCount].transform.position = ObjUpStartPos;
-
-            //tileList[i].transform.GetChild(0).gameObject.SetActive(true);
-            //tileHolderGameObject.GetComponent<GridLayoutGroup>().enabled = true;
-
-            /////////////////////End of moving tiles animation/////////////////////
+            //falling animation handler
+            if (objectToChange.GetComponent<Tile>().belowSimilarTiles == 0)
+            {
+                tileList[i].GetComponent<Animator>().SetFloat("Blend", objectToChange.GetComponent<Tile>().upperSimilarTiles / 5f);
+                tileList[i].GetComponent<Animator>().SetTrigger("Fall");
+            }
 
             tileList[i].transform.GetChild(0).GetComponent<Image>().sprite = ingredients[tileList[i].GetComponent<Tile>().TileType].sprite;
-
 
             upperTiles.RemoveAt(0);
         }
@@ -150,12 +170,20 @@ public class GameBoardManager : MonoBehaviour
         //setting type and sprite for the upper most tile in the list/ Insert a new tile from top
         upperTiles[0].GetComponent<Tile>().TileType = Random.Range(0, ingredients.Length);
         upperTiles[0].transform.GetChild(0).GetComponent<Image>().sprite = ingredients[upperTiles[0].GetComponent<Tile>().TileType].sprite;
+        //falling animation handler
+        if (objectToChange.GetComponent<Tile>().belowSimilarTiles == 0)
+        {
+            upperTiles[0].GetComponent<Animator>().SetFloat("Blend", objectToChange.GetComponent<Tile>().upperSimilarTiles / 5f);
+            upperTiles[0].GetComponent<Animator>().SetTrigger("Fall");
+        }
         upperTiles.RemoveAt(0);
     }
 
-    IEnumerator WaitForSomeSeconds(float secondsToWait)
+    IEnumerator DisableBlocker()
     {
-        yield return new WaitForSeconds(secondsToWait);
+        //waiting time depends on the length of the animation
+        yield return new WaitForSeconds(0.5f);
+        blockingObj.SetActive(false);
         yield return null;
     }
 
@@ -319,7 +347,7 @@ public class GameBoardManager : MonoBehaviour
         }
 
         //changing the actual place of tiles
-        tileList.Sort(SortByIndex);
+        tileList.Sort(SortAscByIndex);
         int j = 0;
         foreach (GameObject tileObj in tileList)
         {
@@ -338,4 +366,6 @@ public class GameBoardManager : MonoBehaviour
             //remember! You are losing the initial index of your game object! Do something for that!
         }
     }
+
 }
+
