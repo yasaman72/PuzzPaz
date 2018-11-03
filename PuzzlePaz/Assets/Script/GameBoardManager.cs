@@ -8,10 +8,9 @@ public class GameBoardManager : MonoBehaviour
 
     public Ingredient[] ingredients;
     public GameObject tilePrefab;
-    public GameObject tileHolderGameObject;
+    public Transform tileHolderGameObject;
     public int boardColCount;
     public int tileListSize;
-    public float fallingSpeed;
     public Text boardText;
     [Space]
     public GameLogicManager gameLogicManager;
@@ -20,7 +19,7 @@ public class GameBoardManager : MonoBehaviour
     [Header("Movement section")]
     public GameObject blockingObj;
 
-    public List<GameObject> tileList = new List<GameObject>();
+    public List<Tile> tileList = new List<Tile>();
 
     private IEnumerator coroutine;
 
@@ -30,13 +29,12 @@ public class GameBoardManager : MonoBehaviour
 
         for (int i = 0; i < tileListSize; i++)
         {
-            tileList.Add(new GameObject());
-            tileList[i] = Instantiate(tilePrefab, tileHolderGameObject.transform);
-            tileList[i].GetComponent<Tile>().myIndex = i;
-            tileList[i].GetComponent<Tile>().TileType = Random.Range(0, ingredients.Length);
-            //tileList[i].GetComponent<Tile>().TileType = tileList[i].GetComponent<Tile>().TileType;
-            tileList[i].transform.GetChild(0).GetComponent<Image>().sprite = ingredients[tileList[i].GetComponent<Tile>().TileType].sprite;
-            //tileList[i].GetComponent<Button>().onClick.AddListener(delegate { onClickOnTile(tileList[i]); });
+            tileList.Add(new Tile());
+            tileList[i].gameObject = Instantiate(tilePrefab, tileHolderGameObject);
+            tileList[i].myIndex = i;
+            tileList[i].isChecked = false;
+            tileList[i].TileType = Random.Range(0, ingredients.Length);
+            tileList[i].gameObject.transform.GetChild(0).GetComponent<Image>().sprite = ingredients[tileList[i].TileType].sprite;
         }
         gameLogicManager.DestroyedConstructor(ingredients.Length);
 
@@ -48,18 +46,20 @@ public class GameBoardManager : MonoBehaviour
         blockingObj.SetActive(false);
     }
 
-    public void CheckClickedTile(int type, int index)
+    public void CheckClickedTile(int index)
     {
-        List<GameObject> SimilarTilesList = new List<GameObject>();
+        List<Tile> SimilarTilesList = new List<Tile>();
 
         //add the selected tile itself to the list of objects to change
         SimilarTilesList.Add(tileList[index]);
-        tileList[index].GetComponent<Tile>().isChecked = true;
+        tileList[index].isChecked = true;
+
+        int type = tileList[index].TileType;
 
         //checks if adjacent tiles have the same type
         SimilarTilesList.AddRange(ListOfSimilarAdjacentTilesObj(index, type));
 
-        tileList[index].GetComponent<Tile>().isChecked = false;
+        tileList[index].isChecked = false;
 
         //Debug.Log("Selected Tiles indexes: ");
         //foreach (GameObject simGameObject in SimilarTilesList)
@@ -86,34 +86,34 @@ public class GameBoardManager : MonoBehaviour
             dishHandler.ChangeRequirementsAmount(SimilarTilesList.Count, ingredients[type]);
 
             //changing the type and sprite of matching tiles
-            foreach (GameObject adjacent in SimilarTilesList)
+            foreach (Tile adjacent in SimilarTilesList)
             {
                 //check how many similar tiles are upon this one to set the right animation in the next step
                 int upperSimilarTiles = 0;
-                for (int i = adjacent.GetComponent<Tile>().myIndex - boardColCount;
-                    i >= 0 && adjacent.GetComponent<Tile>().TileType == tileList[i].GetComponent<Tile>().TileType;
+                for (int i = adjacent.myIndex - boardColCount;
+                    i >= 0 && adjacent.TileType == tileList[i].TileType;
                     i -= boardColCount)
                 {
                     upperSimilarTiles++;
                 }
-                adjacent.GetComponent<Tile>().upperSimilarTiles = upperSimilarTiles;
+                adjacent.upperSimilarTiles = upperSimilarTiles;
 
                 //check how many similar tiles are down this one to set the right animation in the next step
                 int belowSimilarTiles = 0;
-                for (int i = adjacent.GetComponent<Tile>().myIndex + boardColCount;
-                    i < tileListSize && adjacent.GetComponent<Tile>().TileType == tileList[i].GetComponent<Tile>().TileType;
+                for (int i = adjacent.myIndex + boardColCount;
+                    i < tileListSize && adjacent.TileType == tileList[i].TileType;
                     i += boardColCount)
                 {
                     belowSimilarTiles++;
                 }
-                adjacent.GetComponent<Tile>().belowSimilarTiles = belowSimilarTiles;
+                adjacent.belowSimilarTiles = belowSimilarTiles;
 
-                Debug.Log("Index: " + adjacent.GetComponent<Tile>().myIndex + " | upper similar tiles amount: " + upperSimilarTiles
+                Debug.Log("Index: " + adjacent.myIndex + " | upper similar tiles amount: " + upperSimilarTiles
                     + " | down similar tiles amount: " + belowSimilarTiles);
             }
 
             SimilarTilesList.Sort(SortAscByIndex);
-            foreach (GameObject adjacent in SimilarTilesList)
+            foreach (Tile adjacent in SimilarTilesList)
             {
                 ChangeTiles(adjacent);
             }
@@ -129,20 +129,20 @@ public class GameBoardManager : MonoBehaviour
         }
     }
 
-    static int SortAscByIndex(GameObject p1, GameObject p2)
+    static int SortAscByIndex(Tile p1, Tile p2)
     {
-        return (p1.GetComponent<Tile>().myIndex).CompareTo(p2.GetComponent<Tile>().myIndex);
+        return (p1.myIndex).CompareTo(p2.myIndex);
     }
 
-    static int SortDesByIndex(GameObject p1, GameObject p2)
+    static int SortDesByIndex(Tile p1, Tile p2)
     {
-        return (p2.GetComponent<Tile>().myIndex).CompareTo(p1.GetComponent<Tile>().myIndex);
+        return (p2.myIndex).CompareTo(p1.myIndex);
     }
 
-    private void ChangeTiles(GameObject objectToChange)
+    private void ChangeTiles(Tile objectToChange)
     {
-        List<GameObject> upperTiles = new List<GameObject>();
-        int tileIndex = objectToChange.GetComponent<Tile>().myIndex;
+        List<Tile> upperTiles = new List<Tile>();
+        int tileIndex = objectToChange.myIndex;
 
         //find all tile above the breaking tile
         for (int i = tileIndex; i >= 0; i -= boardColCount)
@@ -153,28 +153,28 @@ public class GameBoardManager : MonoBehaviour
         //move the information of each tile to its below tile
         for (int i = tileIndex; upperTiles.Count > 1; i -= boardColCount)
         {
-            tileList[i].GetComponent<Tile>().TileType = tileList[i - boardColCount].GetComponent<Tile>().TileType;
+            tileList[i].TileType = tileList[i - boardColCount].TileType;
 
             //falling animation handler
-            if (objectToChange.GetComponent<Tile>().belowSimilarTiles == 0)
+            if (objectToChange.belowSimilarTiles == 0)
             {
-                tileList[i].GetComponent<Animator>().SetFloat("Blend", objectToChange.GetComponent<Tile>().upperSimilarTiles / 5f);
-                tileList[i].GetComponent<Animator>().SetTrigger("Fall");
+                tileList[i].gameObject.GetComponent<Animator>().SetFloat("Blend", objectToChange.upperSimilarTiles / 5f);
+                tileList[i].gameObject.GetComponent<Animator>().SetTrigger("Fall");
             }
 
-            tileList[i].transform.GetChild(0).GetComponent<Image>().sprite = ingredients[tileList[i].GetComponent<Tile>().TileType].sprite;
+            tileList[i].gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = ingredients[tileList[i].TileType].sprite;
 
             upperTiles.RemoveAt(0);
         }
 
         //setting type and sprite for the upper most tile in the list/ Insert a new tile from top
-        upperTiles[0].GetComponent<Tile>().TileType = Random.Range(0, ingredients.Length);
-        upperTiles[0].transform.GetChild(0).GetComponent<Image>().sprite = ingredients[upperTiles[0].GetComponent<Tile>().TileType].sprite;
+        upperTiles[0].TileType = Random.Range(0, ingredients.Length);
+        upperTiles[0].gameObject.transform.GetChild(0).GetComponent<Image>().sprite = ingredients[upperTiles[0].TileType].sprite;
         //falling animation handler
-        if (objectToChange.GetComponent<Tile>().belowSimilarTiles == 0)
+        if (objectToChange.belowSimilarTiles == 0)
         {
-            upperTiles[0].GetComponent<Animator>().SetFloat("Blend", objectToChange.GetComponent<Tile>().upperSimilarTiles / 5f);
-            upperTiles[0].GetComponent<Animator>().SetTrigger("Fall");
+            upperTiles[0].gameObject.GetComponent<Animator>().SetFloat("Blend", objectToChange.upperSimilarTiles / 5f);
+            upperTiles[0].gameObject.GetComponent<Animator>().SetTrigger("Fall");
         }
         upperTiles.RemoveAt(0);
     }
@@ -187,30 +187,30 @@ public class GameBoardManager : MonoBehaviour
         yield return null;
     }
 
-    private List<GameObject> ListOfSimilarAdjacentTilesObj(int index, int type)
+    private List<Tile> ListOfSimilarAdjacentTilesObj(int index, int type)
     {
-        List<GameObject> adjacentGameObject = new List<GameObject>();
+        List<Tile> adjacentGameObject = new List<Tile>();
 
         adjacentGameObject.AddRange(checkLeftTile(index, type));
         adjacentGameObject.AddRange(checkRightTile(index, type));
         adjacentGameObject.AddRange(checkTopTile(index, type));
         adjacentGameObject.AddRange(checkDownTile(index, type));
 
-        foreach (GameObject adjGameObject in adjacentGameObject)
+        foreach (Tile adjGameObject in adjacentGameObject)
         {
-            adjGameObject.GetComponent<Tile>().isChecked = false;
+            adjGameObject.isChecked = false;
         }
 
         return adjacentGameObject;
 
     }
 
-    private List<GameObject> checkRightTile(int index, int type)
+    private List<Tile> checkRightTile(int index, int type)
     {
-        List<GameObject> ObjectsFound = new List<GameObject>();
+        List<Tile> ObjectsFound = new List<Tile>();
 
         for (int i = 1;
-                index + i < tileListSize && tileList[index + i].GetComponent<Tile>().TileType == type;
+                index + i < tileListSize && tileList[index + i].TileType == type;
                 i++)
         {
             //check if we reached the boarder of the board
@@ -219,10 +219,10 @@ public class GameBoardManager : MonoBehaviour
                 return ObjectsFound;
             }
 
-            if (tileList[index + i].GetComponent<Tile>().isChecked == false)
+            if (tileList[index + i].isChecked == false)
             {
                 ObjectsFound.Add(tileList[index + i]);
-                tileList[index + i].GetComponent<Tile>().isChecked = true;
+                tileList[index + i].isChecked = true;
 
                 ObjectsFound.AddRange(checkTopTile(index + i, type));
                 ObjectsFound.AddRange(checkDownTile(index + i, type));
@@ -232,12 +232,12 @@ public class GameBoardManager : MonoBehaviour
         return ObjectsFound;
     }
 
-    private List<GameObject> checkLeftTile(int index, int type)
+    private List<Tile> checkLeftTile(int index, int type)
     {
-        List<GameObject> ObjectsFound = new List<GameObject>();
+        List<Tile> ObjectsFound = new List<Tile>();
 
         for (int i = -1;
-                index + i >= 0 && tileList[index + i].GetComponent<Tile>().TileType == type;
+                index + i >= 0 && tileList[index + i].TileType == type;
                 i--)
         {
             //check if we reached the boarder of the board
@@ -246,10 +246,10 @@ public class GameBoardManager : MonoBehaviour
                 return ObjectsFound;
             }
 
-            if (tileList[index + i].GetComponent<Tile>().isChecked == false)
+            if (tileList[index + i].isChecked == false)
             {
                 ObjectsFound.Add(tileList[index + i]);
-                tileList[index + i].GetComponent<Tile>().isChecked = true;
+                tileList[index + i].isChecked = true;
 
                 ObjectsFound.AddRange(checkTopTile(index + i, type));
                 ObjectsFound.AddRange(checkDownTile(index + i, type));
@@ -260,19 +260,19 @@ public class GameBoardManager : MonoBehaviour
         return ObjectsFound;
     }
 
-    private List<GameObject> checkDownTile(int index, int type)
+    private List<Tile> checkDownTile(int index, int type)
     {
-        List<GameObject> ObjectsFound = new List<GameObject>();
+        List<Tile> ObjectsFound = new List<Tile>();
 
         for (int i = boardColCount;
-                index + i < tileListSize && tileList[index + i].GetComponent<Tile>().TileType == type;
+                index + i < tileListSize && tileList[index + i].TileType == type;
                 i += boardColCount)
         {
 
-            if (tileList[index + i].GetComponent<Tile>().isChecked == false)
+            if (tileList[index + i].isChecked == false)
             {
                 ObjectsFound.Add(tileList[index + i]);
-                tileList[index + i].GetComponent<Tile>().isChecked = true;
+                tileList[index + i].isChecked = true;
 
                 ObjectsFound.AddRange(checkRightTile(index + i, type));
                 ObjectsFound.AddRange(checkLeftTile(index + i, type));
@@ -281,18 +281,18 @@ public class GameBoardManager : MonoBehaviour
         return ObjectsFound;
     }
 
-    private List<GameObject> checkTopTile(int index, int type)
+    private List<Tile> checkTopTile(int index, int type)
     {
-        List<GameObject> ObjectsFound = new List<GameObject>();
+        List<Tile> ObjectsFound = new List<Tile>();
 
         for (int i = -boardColCount;
-                 index + i >= 0 && tileList[index + i].GetComponent<Tile>().TileType == type;
+                 index + i >= 0 && tileList[index + i].TileType == type;
                  i -= boardColCount)
         {
-            if (tileList[index + i].GetComponent<Tile>().isChecked == false)
+            if (tileList[index + i].isChecked == false)
             {
                 ObjectsFound.Add(tileList[index + i]);
-                tileList[index + i].GetComponent<Tile>().isChecked = true;
+                tileList[index + i].isChecked = true;
 
                 ObjectsFound.AddRange(checkRightTile(index + i, type));
                 ObjectsFound.AddRange(checkLeftTile(index + i, type));
@@ -307,9 +307,9 @@ public class GameBoardManager : MonoBehaviour
     {
         //Debug.Log("Check For Deadend!");
 
-        foreach (GameObject tileObj in tileList)
+        foreach (Tile tileObj in tileList)
         {
-            if (ListOfSimilarAdjacentTilesObj(tileObj.GetComponent<Tile>().myIndex, tileObj.GetComponent<Tile>().TileType).Count >= 2)
+            if (ListOfSimilarAdjacentTilesObj(tileObj.myIndex, tileObj.TileType).Count >= 2)
             {
                 //Debug.Log("Found possible move!");
                 return false;
@@ -333,14 +333,14 @@ public class GameBoardManager : MonoBehaviour
         }
 
         int randomIndex;
-        foreach (GameObject tileObj in tileList)
+        foreach (Tile tileObj in tileList)
         {
             //find a random index for a random space in the board
             randomIndex = Random.Range(0, emptySpaces.Count);
 
             //give the new random index to the game object
-            tileObj.GetComponent<Tile>().myIndex = emptySpaces[randomIndex];
-            tileObj.transform.GetChild(0).GetComponent<Image>().sprite = ingredients[tileObj.GetComponent<Tile>().TileType].sprite;
+            tileObj.myIndex = emptySpaces[randomIndex];
+            tileObj.gameObject.transform.GetChild(0).GetComponent<Image>().sprite = ingredients[tileObj.TileType].sprite;
 
             //remove the index from indexes list
             emptySpaces.RemoveAt(randomIndex);
@@ -349,9 +349,9 @@ public class GameBoardManager : MonoBehaviour
         //changing the actual place of tiles
         tileList.Sort(SortAscByIndex);
         int j = 0;
-        foreach (GameObject tileObj in tileList)
+        foreach (Tile tileObj in tileList)
         {
-            tileObj.transform.SetSiblingIndex(j);
+            tileObj.gameObject.transform.SetSiblingIndex(j);
             j++;
         }
 

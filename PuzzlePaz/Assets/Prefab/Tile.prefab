@@ -39,9 +39,9 @@ GameObject:
   - component: {fileID: 222497493509016258}
   - component: {fileID: 114171084100869536}
   - component: {fileID: 114602143640536648}
-  - component: {fileID: 114942028842637212}
   - component: {fileID: 114962096046326558}
   - component: {fileID: 95216062762142372}
+  - component: {fileID: 114189893432418952}
   m_Layer: 5
   m_Name: Tile
   m_TagString: Untagged
@@ -94,6 +94,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114189893432418952
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1751314264033168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7748202bca7d624dae651a188e02097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114602143640536648
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -133,8 +144,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114942028842637212}
-        m_MethodName: onClickOnTile
+      - m_Target: {fileID: 114189893432418952}
+        m_MethodName: ClickedOnTile
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -173,22 +184,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114942028842637212
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1751314264033168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 507a3f16782077341b1f62518babad8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TileType: 0
-  myIndex: 0
-  isChecked: 0
-  upperSimilarTiles: 0
-  belowSimilarTiles: 0
 --- !u!114 &114962096046326558
 MonoBehaviour:
   m_ObjectHideFlags: 1
