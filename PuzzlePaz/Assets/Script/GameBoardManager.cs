@@ -14,7 +14,7 @@ public class GameBoardManager : MonoBehaviour
     public Text boardText;
     [Space]
     public GameLogicManager gameLogicManager;
-    public DishHandler dishHandler;
+    public OrderHandler orderHandler;
 
     [Header("Movement section")]
     public GameObject blockingObj;
@@ -83,7 +83,7 @@ public class GameBoardManager : MonoBehaviour
             //}
 
             gameLogicManager.CountDestroyedTilesByType(SimilarTilesList.Count, ingredients[type]);
-            dishHandler.ChangeRequirementsAmount(SimilarTilesList.Count, ingredients[type]);
+            orderHandler.ChangeRequirementsAmount(SimilarTilesList.Count, ingredients[type]);
 
             //changing the type and sprite of matching tiles
             foreach (Tile adjacent in SimilarTilesList)
@@ -108,8 +108,8 @@ public class GameBoardManager : MonoBehaviour
                 }
                 adjacent.belowSimilarTiles = belowSimilarTiles;
 
-                Debug.Log("Index: " + adjacent.myIndex + " | upper similar tiles amount: " + upperSimilarTiles
-                    + " | down similar tiles amount: " + belowSimilarTiles);
+                //Debug.Log("Index: " + adjacent.myIndex + " | upper similar tiles amount: " + upperSimilarTiles
+                //    + " | down similar tiles amount: " + belowSimilarTiles);
             }
 
             SimilarTilesList.Sort(SortAscByIndex);

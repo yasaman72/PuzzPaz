@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ccb1e506eedce4fae229655eb57a75, type: 3}
   m_Name: Soup
   m_EditorClassIdentifier: 
-  name: Fruit Salad
+  name: Soup
   sprite: {fileID: 21300004, guid: 0ede55fbf80e4c34a935ca903e44aac3, type: 3}
   ingredients:
   - ingredient: {fileID: 11400000, guid: 6936bd008877cf247b71d5ad2ddf584d, type: 2}
@@ -20,3 +20,4 @@ MonoBehaviour:
     Amount: 10
   - ingredient: {fileID: 11400000, guid: 66f387f56bcfd0d49863d659be614e1b, type: 2}
     Amount: 15
+  rewardAmount: 5

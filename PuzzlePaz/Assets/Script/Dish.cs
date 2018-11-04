@@ -8,6 +8,7 @@ public class Dish : ScriptableObject
     public new string name;
     public Sprite sprite;
     public ingredientstruct[] ingredients;
+    public int rewardAmount;
 }
 
 [System.Serializable]
