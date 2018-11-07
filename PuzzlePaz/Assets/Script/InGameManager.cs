@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour {
 
+public class InGameManager : MonoBehaviour {
 
     public void ResetCurrentScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
 }

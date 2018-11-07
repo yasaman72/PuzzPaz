@@ -5,9 +5,9 @@ using UnityEngine;
 public enum ingredientEnum
 {
     tomato = 0,
-    corn = 1,
-    onion = 2,
-    orange = 3
+    balal = 1,
+    laboo = 2,
+    baghali = 3
 }
 
 [CreateAssetMenu(fileName = "new ingredient", menuName = "cooking/ingredient")]

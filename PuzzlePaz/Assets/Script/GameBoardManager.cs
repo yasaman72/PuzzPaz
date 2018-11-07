@@ -15,6 +15,7 @@ public class GameBoardManager : MonoBehaviour
     [Space]
     public GameLogicManager gameLogicManager;
     public OrderHandler orderHandler;
+    public IngredientsFly ingredientsFly;
 
     [Header("Movement section")]
     public GameObject blockingObj;
@@ -82,12 +83,18 @@ public class GameBoardManager : MonoBehaviour
             //    Debug.Log((simGameObject.GetComponent<Tile>().myIndex));
             //}
 
+
             gameLogicManager.CountDestroyedTilesByType(SimilarTilesList.Count, ingredients[type]);
-            orderHandler.ChangeRequirementsAmount(SimilarTilesList.Count, ingredients[type]);
+            bool wasSomthingFromOrder = orderHandler.ChangeRequirementsAmount(SimilarTilesList.Count, ingredients[type]);
+            
 
             //changing the type and sprite of matching tiles
             foreach (Tile adjacent in SimilarTilesList)
             {
+                //playing flying animation
+                if (wasSomthingFromOrder)
+                    ingredientsFly.MoveTileToTarget(adjacent.myIndex, type);
+
                 //check how many similar tiles are upon this one to set the right animation in the next step
                 int upperSimilarTiles = 0;
                 for (int i = adjacent.myIndex - boardColCount;

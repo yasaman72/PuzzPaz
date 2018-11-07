@@ -5,11 +5,11 @@ TextureImporter:
     21300000: Tile Icons_0
     21300002: Tile Icons_1
     21300004: tomato
-    21300006: orange
+    21300006: Baghali
     21300008: Tile Icons_4
-    21300010: corn
+    21300010: Balal
     21300012: Tile Icons_6
-    21300014: onion
+    21300014: Laboo
     21300016: Tile Icons_8
     21300018: Tile Icons_9
   externalObjects: {}
@@ -187,13 +187,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: orange
+      name: Baghali
       rect:
         serializedVersion: 2
-        x: 402
-        y: 144
-        width: 118
-        height: 120
+        x: 398
+        y: 139
+        width: 128
+        height: 127
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -227,13 +227,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: corn
+      name: Balal
       rect:
         serializedVersion: 2
-        x: 14
-        y: 6
-        width: 123
-        height: 123
+        x: 8
+        y: 2
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -267,13 +267,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: onion
+      name: Laboo
       rect:
         serializedVersion: 2
-        x: 272
-        y: 6
-        width: 123
-        height: 123
+        x: 270
+        y: 3
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
