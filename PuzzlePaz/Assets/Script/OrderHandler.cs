@@ -34,6 +34,7 @@ public class OrderHandler : MonoBehaviour
     private Order[] orders;
     private int customerImageInt;
     private int finishedIngredients;
+    private List<int> ordersCounter = new List<int>();
 
     private List<int> collectedIngredientsIndex = new List<int>();
 
@@ -41,23 +42,36 @@ public class OrderHandler : MonoBehaviour
     {
         finishedIngredients = 0;
         dishIndex = 0;
-        orderIndex = 0;
         orders = levelManager.levels[levelManager.currentLevelIndex].ordersList;
         customerImageInt = Random.Range(0, customerImages.Length);
         customerObj.GetComponent<Image>().sprite = customerImages[customerImageInt];
+
         customerAnimator.SetTrigger("Enter");
         bubbleAnimator.SetTrigger("Enter");
+
+        ordersCounter.Clear();
+        orderIndex = NextOrderIndex();
+
         GoToNextDish();
     }
 
+
     public void GoToNextOrder()
     {
-        customerAnimator.SetTrigger("Exit");
         bubbleAnimator.SetTrigger("Exit");
+
+        if (ordersCounter.Count >= orders.Length)
+        {
+            Debug.Log("Finished the level!");
+            levelManager.FinishedLevel();
+            return;
+        }
+
+        customerAnimator.SetTrigger("Exit");
         blockingObj.SetActive(true);
 
         dishIndex = 0;
-        orderIndex++;
+        orderIndex = NextOrderIndex();
     }
 
     private int NextCustomerImageIndex()
@@ -73,19 +87,25 @@ public class OrderHandler : MonoBehaviour
         return myCustomerImageInt;
     }
 
+    private int NextOrderIndex()
+    {
+        int myOrderIndex = Random.Range(0, orders.Length);
+
+        if (ordersCounter.Contains(myOrderIndex))
+        {
+            return NextOrderIndex();
+        }
+
+        ordersCounter.Add(myOrderIndex);
+        return myOrderIndex;
+    }
+
     //will  be called when customer goes out of the screen
     public void ShowTheNewCustomer()
     {
         //Mood slider setup
         moodSlider.value = 1;
         sliderFill.color = superHappy;
-
-        if (orderIndex >= orders.Length)
-        {
-            Debug.Log("Finished the level!");
-            levelManager.FinishedLevel();
-            return;
-        }      
 
         customerImageInt = NextCustomerImageIndex();
         customerObj.GetComponent<Image>().sprite = customerImages[customerImageInt];
@@ -108,9 +128,9 @@ public class OrderHandler : MonoBehaviour
             moodSlider.value += dishComplishmentModePlus;
             currentDish = orders[orderIndex].dishes[dishIndex];
 
-            //Debug.Log("current level: " + levelManager.levels[levelManager.currentLevelIndex].levelName +
-            //" | current order: " + orders[orderIndex].name +
-            //" | current dish: " + currentDish.name);
+            Debug.Log("current level: " + levelManager.levels[levelManager.currentLevelIndex].levelName +
+            " | current order: " + orders[orderIndex].name +
+            " | current dish: " + currentDish.name);
 
             if (orders[orderIndex].dishes.Length > (dishIndex + 1))
                 dishesText._rawText = "و " + (orders[orderIndex].dishes.Length - 1) + " سفارش دیگر...";
@@ -174,7 +194,7 @@ public class OrderHandler : MonoBehaviour
                     requirements[i].amount = 0;
                     requirements[i].gameObject.SetActive(false);
                     finishedIngredients++;
-                    Debug.Log("You finished an ingredient!!");
+                    //Debug.Log("You finished an ingredient!!");
                     madeAnOrderInger = true;
                 }
                 requirements[i].SetAppearance();
@@ -186,14 +206,14 @@ public class OrderHandler : MonoBehaviour
         //      Checks Customer Mood
         moodSlider.value -= ModeMinus;
 
-        if(moodSlider.value <= 0)
+        if (moodSlider.value <= 0)
         {
             collectedIngredientsIndex.Clear();
             finishedIngredients = 0;
             GoToNextOrder();
         }
 
-        if(moodSlider.value < 0.3)
+        if (moodSlider.value < 0.3)
             sliderFill.color = happy;
         else
             sliderFill.color = superHappy;
@@ -207,7 +227,7 @@ public class OrderHandler : MonoBehaviour
         {
             collectedIngredientsIndex.Clear();
             finishedIngredients = 0;
-            Debug.Log("Congratulations! You finished a dish!!");
+            //Debug.Log("Congratulations! You finished a dish!!");
             levelManager.FinishedADish(currentDish.rewardAmount);
             GoToNextDish();
         }

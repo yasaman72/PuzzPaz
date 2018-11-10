@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 496b1312a0586374eaa3db1ebb1e46ff, type: 3}
-  m_Name: Order 6
+  m_Name: Order 9
   m_EditorClassIdentifier: 
   name: order 6
   orderDifficulty: 1
   dishes:
-  - {fileID: 11400000, guid: a9fcb5e537e8c204192d1e7ed48495ef, type: 2}
+  - {fileID: 11400000, guid: 758869edddb35e949b3f85498fdce57f, type: 2}

@@ -9,15 +9,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50ccb1e506eedce4fae229655eb57a75, type: 3}
-  m_Name: Stew
+  m_Name: Stew 2
   m_EditorClassIdentifier: 
-  name: Stew
-  sprite: {fileID: 21300006, guid: 0ede55fbf80e4c34a935ca903e44aac3, type: 3}
+  name: Lazania
+  sprite: {fileID: 21300010, guid: 0ede55fbf80e4c34a935ca903e44aac3, type: 3}
   ingredients:
-  - ingredient: {fileID: 11400000, guid: 4b08d8a912724d746a00748e96f84140, type: 2}
-    Amount: 5
-  - ingredient: {fileID: 11400000, guid: 66f387f56bcfd0d49863d659be614e1b, type: 2}
-    Amount: 7
   - ingredient: {fileID: 11400000, guid: b02cdaa87b0f0614ba429952e6e1bfa8, type: 2}
-    Amount: 5
+    Amount: 6
+  - ingredient: {fileID: 11400000, guid: 4b08d8a912724d746a00748e96f84140, type: 2}
+    Amount: 4
   rewardAmount: 10

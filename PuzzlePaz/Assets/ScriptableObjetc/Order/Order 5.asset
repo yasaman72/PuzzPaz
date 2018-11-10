@@ -14,5 +14,4 @@ MonoBehaviour:
   name: order 5
   orderDifficulty: 1
   dishes:
-  - {fileID: 11400000, guid: 11f1ded177681c042b433019cfd90115, type: 2}
-  - {fileID: 11400000, guid: c32baf8f93842cb40a39814a2bb12d54, type: 2}
+  - {fileID: 11400000, guid: c454b64fdc4857644a88018130d05d29, type: 2}

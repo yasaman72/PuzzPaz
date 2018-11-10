@@ -10,8 +10,10 @@ public class LevelManager : MonoBehaviour
     public int currentLevelIndex;
     public GameObject gameOverObj;
     public GameObject blockerObj;
+    public GameObject inGame, GameMenu;
     public Slider levelGoalSlider;
     public OrderHandler orderHandler;
+    public GameBoardManager gameBoardManager;
     public Image[] goalStars;
     public Sprite filledStar, EmptyStar;
     public PersianText gameOverTxt;
@@ -28,10 +30,14 @@ public class LevelManager : MonoBehaviour
 
     public void SetLevel(int levelIndex)
     {
+        inGame.SetActive(true);
+        GameMenu.SetActive(false);
+
         currentLevelIndex = levelIndex;
         moveAmountText._rawText = levels[currentLevelIndex].moves.ToString();
         moveAmountText.enabled = false;
         moveAmountText.enabled = true;
+        gameOverObj.SetActive(false);
 
         coinAmountText._rawText = "0";
         coinAmountText.enabled = false;
@@ -50,9 +56,12 @@ public class LevelManager : MonoBehaviour
         }
 
         levelGoalSlider.value = 0;
+        rewardAmount = 0;
 
+        usedMoves = 0;
         wonTheLevel = false;
 
+        gameBoardManager.NewBoard();
         orderHandler.StartTheDay();
     }
 

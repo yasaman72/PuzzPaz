@@ -45,7 +45,12 @@ public class GameBoardManager : MonoBehaviour
         {
             ShuffleTiles();
         }
+    }
 
+    public void NewBoard()
+    {
+        ShuffleTiles();
+        thisGameMoves = 0;
         blockingObj.SetActive(false);
     }
 
