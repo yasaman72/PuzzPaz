@@ -17,13 +17,19 @@ public class OrderHandler : MonoBehaviour
     public Transform requirementsHolder;
     public Text orderNameText;
     public Animator customerAnimator, bubbleAnimator;
+    [Space, Header("Customer Mood")]
+    public Slider moodSlider;
+    public Image sliderFill;
+    public Color superHappy, happy;
+    public float dishComplishmentModePlus;
+    public float ModeMinus;
     [Space]
     public List<RequirementsC> requirements;
-    [Space]
+    [HideInInspector]
     public Dish currentDish;
 
-    public int dishIndex;
-    public int orderIndex;
+    private int dishIndex;
+    private int orderIndex;
 
     private Order[] orders;
     private int customerImageInt;
@@ -48,11 +54,10 @@ public class OrderHandler : MonoBehaviour
     {
         customerAnimator.SetTrigger("Exit");
         bubbleAnimator.SetTrigger("Exit");
-        blockingObj.SetActive(true);        
+        blockingObj.SetActive(true);
 
         dishIndex = 0;
         orderIndex++;
-
     }
 
     private int NextCustomerImageIndex()
@@ -71,14 +76,16 @@ public class OrderHandler : MonoBehaviour
     //will  be called when customer goes out of the screen
     public void ShowTheNewCustomer()
     {
+        //Mood slider setup
+        moodSlider.value = 1;
+        sliderFill.color = superHappy;
+
         if (orderIndex >= orders.Length)
         {
             Debug.Log("Finished the level!");
             levelManager.FinishedLevel();
             return;
-        }
-
-        blockingObj.SetActive(false);
+        }      
 
         customerImageInt = NextCustomerImageIndex();
         customerObj.GetComponent<Image>().sprite = customerImages[customerImageInt];
@@ -88,16 +95,22 @@ public class OrderHandler : MonoBehaviour
         GoToNextDish();
     }
 
+    public void DisableBlocking()
+    {
+        blockingObj.SetActive(false);
+    }
+
     public void GoToNextDish()
     {
         //check if there are still any dish in the order
         if (orders[orderIndex].dishes.Length > dishIndex)
         {
+            moodSlider.value += dishComplishmentModePlus;
             currentDish = orders[orderIndex].dishes[dishIndex];
 
-            Debug.Log("current level: " + levelManager.levels[levelManager.currentLevelIndex].levelName +
-            " | current order: " + orders[orderIndex].name +
-            " | current dish: " + currentDish.name);
+            //Debug.Log("current level: " + levelManager.levels[levelManager.currentLevelIndex].levelName +
+            //" | current order: " + orders[orderIndex].name +
+            //" | current dish: " + currentDish.name);
 
             if (orders[orderIndex].dishes.Length > (dishIndex + 1))
                 dishesText._rawText = "و " + (orders[orderIndex].dishes.Length - 1) + " سفارش دیگر...";
@@ -170,6 +183,21 @@ public class OrderHandler : MonoBehaviour
             }
         }
 
+        //      Checks Customer Mood
+        moodSlider.value -= ModeMinus;
+
+        if(moodSlider.value <= 0)
+        {
+            collectedIngredientsIndex.Clear();
+            finishedIngredients = 0;
+            GoToNextOrder();
+        }
+
+        if(moodSlider.value < 0.3)
+            sliderFill.color = happy;
+        else
+            sliderFill.color = superHappy;
+
         return madeAnOrderInger;
     }
 
@@ -180,7 +208,7 @@ public class OrderHandler : MonoBehaviour
             collectedIngredientsIndex.Clear();
             finishedIngredients = 0;
             Debug.Log("Congratulations! You finished a dish!!");
-
+            levelManager.FinishedADish(currentDish.rewardAmount);
             GoToNextDish();
         }
     }

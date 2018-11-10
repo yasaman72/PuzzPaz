@@ -33,11 +33,11 @@ public class Level : ScriptableObject
         switch (goalIndex)
         {
             case 0:
-                return (Mathf.CeilToInt((maxPossibleCoinReward) * 0.3f));
+                return (Mathf.CeilToInt((maxPossibleCoinReward) * 0.35f));
             case 1:
                 return (Mathf.CeilToInt((maxPossibleCoinReward) * 0.5f));
             case 2:
-                return (Mathf.CeilToInt((maxPossibleCoinReward) * 0.7f));
+                return (Mathf.CeilToInt((maxPossibleCoinReward) * 0.75f));
             default:
                 Debug.Log("Couldn't find level goals amount.");
                 return 0;

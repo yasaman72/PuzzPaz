@@ -13,6 +13,7 @@ public class GameBoardManager : MonoBehaviour
     public int tileListSize;
     public Text boardText;
     [Space]
+    public LevelManager levelManager;
     public GameLogicManager gameLogicManager;
     public OrderHandler orderHandler;
     public IngredientsFly ingredientsFly;
@@ -23,6 +24,7 @@ public class GameBoardManager : MonoBehaviour
     public List<Tile> tileList = new List<Tile>();
 
     private IEnumerator coroutine;
+    private int thisGameMoves;
 
     void Start()
     {
@@ -69,8 +71,11 @@ public class GameBoardManager : MonoBehaviour
         //}
 
         //check if there are 3 adjacent similar tiles
-        if (SimilarTilesList.Count >= 3)
+        if (SimilarTilesList.Count >= 2)
         {
+            thisGameMoves++;
+            levelManager.MadeAMove(thisGameMoves);
+
             blockingObj.SetActive(true);
             StartCoroutine("DisableBlocker");
             //Debug.Log("Type: " + type + " index: " + index + " Similar Tiles: " + SimilarTilesList.Count);
@@ -86,7 +91,7 @@ public class GameBoardManager : MonoBehaviour
 
             gameLogicManager.CountDestroyedTilesByType(SimilarTilesList.Count, ingredients[type]);
             bool wasSomthingFromOrder = orderHandler.ChangeRequirementsAmount(SimilarTilesList.Count, ingredients[type]);
-            
+
 
             //changing the type and sprite of matching tiles
             foreach (Tile adjacent in SimilarTilesList)
@@ -316,7 +321,7 @@ public class GameBoardManager : MonoBehaviour
 
         foreach (Tile tileObj in tileList)
         {
-            if (ListOfSimilarAdjacentTilesObj(tileObj.myIndex, tileObj.TileType).Count >= 2)
+            if (ListOfSimilarAdjacentTilesObj(tileObj.myIndex, tileObj.TileType).Count >= 1)
             {
                 //Debug.Log("Found possible move!");
                 return false;

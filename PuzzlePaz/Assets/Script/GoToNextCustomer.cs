@@ -10,4 +10,9 @@ public class GoToNextCustomer : MonoBehaviour {
     {
         orderHandler.ShowTheNewCustomer();
     }
+
+    public void DisableBlocker()
+    {
+        orderHandler.DisableBlocking();
+    }
 }
