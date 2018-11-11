@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class GameBoardManager : MonoBehaviour
 {
-
     public Ingredient[] ingredients;
     public GameObject tilePrefab;
     public Transform tileHolderGameObject;
@@ -52,6 +51,7 @@ public class GameBoardManager : MonoBehaviour
         ShuffleTiles();
         thisGameMoves = 0;
         blockingObj.SetActive(false);
+        ingredientsFly.ResetFakeTiles();
     }
 
     public void CheckClickedTile(int index)

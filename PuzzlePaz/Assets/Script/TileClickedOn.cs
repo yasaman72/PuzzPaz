@@ -6,6 +6,6 @@ public class TileClickedOn : MonoBehaviour {
 
 	public void ClickedOnTile()
     {
-        gameObject.transform.parent.GetComponent<GameBoardManager>().CheckClickedTile(gameObject.transform.GetSiblingIndex());
+        gameObject.transform.parent.GetComponent<TilesClickHelper>().gameBoardManager.CheckClickedTile(gameObject.transform.GetSiblingIndex());
     }
 }

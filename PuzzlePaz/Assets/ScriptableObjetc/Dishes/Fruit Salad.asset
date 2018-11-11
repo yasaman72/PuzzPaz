@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Fruit Salad
   m_EditorClassIdentifier: 
   name: Fruit Salad
-  sprite: {fileID: 21300002, guid: 0ede55fbf80e4c34a935ca903e44aac3, type: 3}
+  sprite: {fileID: 21300000, guid: 4aced115373bd3b45a2d3df849e68043, type: 3}
   ingredients:
   - ingredient: {fileID: 11400000, guid: 6936bd008877cf247b71d5ad2ddf584d, type: 2}
     Amount: 5

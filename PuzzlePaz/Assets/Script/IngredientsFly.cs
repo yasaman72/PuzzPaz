@@ -13,6 +13,7 @@ public class IngredientsFly : MonoBehaviour
     public Transform target;
     public float initiaWaitTime;
     public float flyingSpeed;
+    public Transform fakeHolder;
     public List<FakeTile> fakeTiles;
 
     private IEnumerator goToTargetCo;
@@ -22,11 +23,20 @@ public class IngredientsFly : MonoBehaviour
         for (int i = 0; i < boardSize; i++)
         {
             fakeTiles.Add(new FakeTile());
-            fakeTiles[i].fakeTileObj = Instantiate(fakeTileObj, gameObject.transform);
+            fakeTiles[i].fakeTileObj = Instantiate(fakeTileObj, fakeHolder);
             fakeTiles[i].tileImageObj = fakeTiles[i].fakeTileObj.transform.GetChild(0).gameObject;
             fakeTiles[i].tileImage = fakeTiles[i].tileImageObj.GetComponent<Image>();
             fakeTiles[i].initialImgPos = fakeTiles[i].tileImageObj.GetComponent<RectTransform>().localPosition;
             fakeTiles[i].tileImage.enabled = false;
+        }
+    }
+
+    public void ResetFakeTiles()
+    {
+        for (int i = 0; i < boardSize; i++)
+        {
+            fakeTiles[i].tileImage.enabled = false;
+            //fakeTiles[i].tileImageObj.GetComponent<RectTransform>().localPosition = fakeTiles[i].initialImgPos;
         }
     }
 

@@ -60,7 +60,7 @@ public class LevelManager : MonoBehaviour
 
         usedMoves = 0;
         wonTheLevel = false;
-
+        
         gameBoardManager.NewBoard();
         orderHandler.StartTheDay();
     }

@@ -11,6 +11,8 @@ public class InGameManager : MonoBehaviour {
 
     private void Start()
     {
+
+
         foreach(GameObject activateObj in activateThese)
         {
             activateObj.SetActive(true);

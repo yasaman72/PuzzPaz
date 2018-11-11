@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Events;
 using UnityEngine.UI;
 
 public class GameMenuManager : MonoBehaviour
@@ -18,7 +17,7 @@ public class GameMenuManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < levelsCount; i++)
+        for (int i = 0; i < levelsLine.positionCount; i++)
         {
             GameObject newLevel = Instantiate(levelNodeObj, levelsContainer);
 
@@ -28,16 +27,11 @@ public class GameMenuManager : MonoBehaviour
             newLevel.transform.GetChild(2).gameObject.SetActive(false);
 
             int j = i;
-            newLevel.GetComponent<Button>().onClick.AddListener(() => ClickedOnNodeBtn(j));
+            newLevel.GetComponent<Button>().onClick.AddListener(() => levelManager.SetLevel(j));
 
             levelNodes.Add(newLevel);
         }
     }
 
-    public void ClickedOnNodeBtn(int index)
-    {
-        Debug.Log(index.ToString());
-        //levelManager.SetLevel(index);
-    }
 
 }

@@ -34,7 +34,8 @@ public class OrderHandler : MonoBehaviour
     private Order[] orders;
     private int customerImageInt;
     private int finishedIngredients;
-    private List<int> ordersCounter = new List<int>();
+    private List<int> ordersHolder = new List<int>();
+    private int ordersCounter;
 
     private List<int> collectedIngredientsIndex = new List<int>();
 
@@ -42,6 +43,7 @@ public class OrderHandler : MonoBehaviour
     {
         finishedIngredients = 0;
         dishIndex = 0;
+        ordersCounter = 0;
         orders = levelManager.levels[levelManager.currentLevelIndex].ordersList;
         customerImageInt = Random.Range(0, customerImages.Length);
         customerObj.GetComponent<Image>().sprite = customerImages[customerImageInt];
@@ -49,7 +51,7 @@ public class OrderHandler : MonoBehaviour
         customerAnimator.SetTrigger("Enter");
         bubbleAnimator.SetTrigger("Enter");
 
-        ordersCounter.Clear();
+        ordersHolder = new List<int>();
         orderIndex = NextOrderIndex();
 
         GoToNextDish();
@@ -58,20 +60,21 @@ public class OrderHandler : MonoBehaviour
 
     public void GoToNextOrder()
     {
-        bubbleAnimator.SetTrigger("Exit");
+        ordersCounter++;
 
-        if (ordersCounter.Count >= orders.Length)
+        bubbleAnimator.SetTrigger("Exit");
+        customerAnimator.SetTrigger("Exit");
+
+        if (ordersCounter >= orders.Length)
         {
             Debug.Log("Finished the level!");
-            levelManager.FinishedLevel();
+            levelManager.FinishedLevel();           
             return;
         }
-
-        customerAnimator.SetTrigger("Exit");
-        blockingObj.SetActive(true);
-
         dishIndex = 0;
         orderIndex = NextOrderIndex();
+
+        blockingObj.SetActive(true);
     }
 
     private int NextCustomerImageIndex()
@@ -91,24 +94,31 @@ public class OrderHandler : MonoBehaviour
     {
         int myOrderIndex = Random.Range(0, orders.Length);
 
-        if (ordersCounter.Contains(myOrderIndex))
+        if (ordersHolder.Contains(myOrderIndex))
         {
             return NextOrderIndex();
         }
 
-        ordersCounter.Add(myOrderIndex);
+        ordersHolder.Add(myOrderIndex);
         return myOrderIndex;
     }
 
     //will  be called when customer goes out of the screen
     public void ShowTheNewCustomer()
     {
+        if (ordersCounter >= orders.Length)
+        {
+            return;
+        }
+
         //Mood slider setup
         moodSlider.value = 1;
         sliderFill.color = superHappy;
 
         customerImageInt = NextCustomerImageIndex();
         customerObj.GetComponent<Image>().sprite = customerImages[customerImageInt];
+
+        customerAnimator.Rebind();
         customerAnimator.SetTrigger("Enter");
         bubbleAnimator.SetTrigger("Enter");
 
