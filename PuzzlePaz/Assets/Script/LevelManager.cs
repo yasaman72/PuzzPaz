@@ -12,6 +12,7 @@ public class LevelManager : MonoBehaviour
     public GameObject blockerObj;
     public GameObject inGame, GameMenu;
     public Slider levelGoalSlider;
+    public GameData gameData;
     public OrderHandler orderHandler;
     public GameBoardManager gameBoardManager;
     public Image[] goalStars;
@@ -30,6 +31,13 @@ public class LevelManager : MonoBehaviour
 
     public void SetLevel(int levelIndex)
     {
+        if (gameData.levelDatas.Datas[levelIndex].lvlState < 0)
+        {
+            Debug.Log("This level is not available!!");
+            return;
+        }
+
+
         inGame.SetActive(true);
         GameMenu.SetActive(false);
 
@@ -84,19 +92,18 @@ public class LevelManager : MonoBehaviour
         coinAmountText.enabled = false;
         coinAmountText.enabled = true;
 
-
         levelGoalSlider.value = (float)rewardAmount / (float)levelCoinGoals[2];
 
         //setting star shapes if coin amount reach them
+        if (levelGoalSlider.value >= 1)
+            goalStars[2].sprite = filledStar;
+        if (levelGoalSlider.value >= 0.8)
+            goalStars[1].sprite = filledStar;
         if (levelGoalSlider.value >= 0.5)
         {
             goalStars[0].sprite = filledStar;
             wonTheLevel = true;
         }
-        if (levelGoalSlider.value >= 0.8)
-            goalStars[1].sprite = filledStar;
-        if (levelGoalSlider.value >= 1)
-            goalStars[2].sprite = filledStar;
 
     }
 
@@ -124,6 +131,16 @@ public class LevelManager : MonoBehaviour
         if (wonTheLevel)
         {
             gameOverTxt._rawText = "ایول بردی!";
+
+            int gainedStars;
+            if (levelGoalSlider.value >= 1)
+                gainedStars = 3;
+            else if (levelGoalSlider.value >= 0.8)
+                gainedStars = 2;
+            else
+                gainedStars = 1;
+
+            gameData.SetUpNewPlayerLevelData(currentLevelIndex, gainedStars, rewardAmount);
         }
         else
         {
