@@ -31,7 +31,7 @@ public class LevelManager : MonoBehaviour
 
     public void SetLevel(int levelIndex)
     {
-        if (gameData.levelDatas.Datas[levelIndex].lvlState < 0)
+        if (gameData.levelDatas[levelIndex].lvlState < 0)
         {
             Debug.Log("This level is not available!!");
             return;

@@ -8,10 +8,10 @@ public class InGameManager : MonoBehaviour {
 
     public GameObject[] activateThese;
     public GameObject[] deactiveThese;
+    public GameData gameData;
 
     private void Start()
-    {
-
+    {       
 
         foreach(GameObject activateObj in activateThese)
         {
@@ -22,6 +22,7 @@ public class InGameManager : MonoBehaviour {
         {
             deactivateObj.SetActive(false);
         }
+
     }
 
     public void ResetCurrentScene()
@@ -29,5 +30,17 @@ public class InGameManager : MonoBehaviour {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    private void OnApplicationQuit()
+    {
+        gameData.SaveGame();
+    }
+    private void OnApplicationPause(bool pause)
+    {
+        gameData.SaveGame();
+    }
 
+    public void ClearPlayerData()
+    {
+        PlayerPrefs.DeleteAll();
+    }
 }

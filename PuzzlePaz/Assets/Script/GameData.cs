@@ -6,7 +6,7 @@ using System.IO;
 
 public class GameData : MonoBehaviour
 {
-    public LevelDatas levelDatas;
+    public List<LevelData> levelDatas;
     public LevelManager levelManager;
     public GameMenuManager gameMenuManager;
 
@@ -19,13 +19,13 @@ public class GameData : MonoBehaviour
             LevelData myLevelData = new LevelData();
             myLevelData.LevelIndex = i;
             myLevelData.lvlState = -1;
-            levelDatas.Datas.Add(myLevelData);
+            levelDatas.Add(myLevelData);
         }
 
         //setting up the current active level
         if (PlayerPrefs.HasKey("CurrentLvl"))
         {
-            levelDatas.Datas[PlayerPrefs.GetInt("CurrentLvl")].lvlState = 0;
+            levelDatas[PlayerPrefs.GetInt("CurrentLvl")].lvlState = 0;
         }
         else
         {
@@ -36,22 +36,26 @@ public class GameData : MonoBehaviour
         //set levels with smaller index's state to passed
         for (int i = 0; i < activeLevelIndex; i++)
         {
-            levelDatas.Datas[i].lvlState = 1;
+            levelDatas[i].lvlState = 1;
         }
 
+        if (PlayerPrefs.GetInt("SavedGame") == 1)
+        {
+            LoadGame();
+        }
     }
 
     //will setup the game based on player saved data
     public void SetInitialLevel(List<GameObject> levelNodes)
     {
-        for (int i = 0; i < levelDatas.Datas.Count; i++)
+        for (int i = 0; i < levelDatas.Count; i++)
         {
             //check if player has not yet passed the level
-            if (levelDatas.Datas[i].lvlState < 0)
+            if (levelDatas[i].lvlState < 0)
             {
                 levelNodes[i].GetComponent<Image>().color = gameMenuManager.future;
             }
-            else if (levelDatas.Datas[i].lvlState == 0)
+            else if (levelDatas[i].lvlState == 0)
             {
                 levelNodes[i].GetComponent<Image>().color = gameMenuManager.current;
             }
@@ -74,13 +78,13 @@ public class GameData : MonoBehaviour
             }
         }
 
-        levelDatas.Datas[levelIndex].lvlState = 1;
-        levelDatas.Datas[levelIndex + 1].lvlState = 0;
-        levelDatas.Datas[levelIndex].score = rewardAmount;
+        levelDatas[levelIndex].lvlState = 1;
+        levelDatas[levelIndex + 1].lvlState = 0;
+        levelDatas[levelIndex].score = rewardAmount;
 
         //check if the new star amount is bigger than the current one and then sets it
-        if (levelDatas.Datas[levelIndex].starsAmount < stars)
-            levelDatas.Datas[levelIndex].starsAmount = stars;
+        if (levelDatas[levelIndex].starsAmount < stars)
+            levelDatas[levelIndex].starsAmount = stars;
 
         gameMenuManager.SetUpLevelStars(levelIndex, stars);
     }
@@ -91,18 +95,24 @@ public class GameData : MonoBehaviour
         string filePath = Application.dataPath + dataFilePath;
         string json = "";
 
-        json += "[";
-        for (int i = 0; i < levelDatas.Datas.Count; i++)
+        //json += "[";
+        for (int i = 0; i < levelDatas.Count; i++)
         {
-            json += JsonUtility.ToJson(levelDatas.Datas[i]);
-            json += ",";
+            json += JsonUtility.ToJson(levelDatas[i]);
+            if(i < levelDatas.Count - 1)
+            json += "/";
         }
-        json += "]";
+        //json += "]";
         Debug.Log(json);
 
         if (File.Exists(filePath))
         {
             File.WriteAllText(filePath, json);
+            if (!PlayerPrefs.HasKey("SavedGame"))
+            {
+                PlayerPrefs.SetInt("SavedGame", 1);
+            }
+            Debug.Log("Saved Data!!!");
         }
     }
 
@@ -112,10 +122,13 @@ public class GameData : MonoBehaviour
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
+            string[] jsonChunks = json.Split('/');
 
-            levelDatas = new LevelDatas();
-            levelDatas = JsonUtility.FromJson<LevelDatas>(json);
+            for (int i = 0; i < jsonChunks.Length; i++)
+            {
+                levelDatas[i] = JsonUtility.FromJson<LevelData>(jsonChunks[i]);
+            }
+            Debug.Log("Loaded Data!!");
         }
-
     }
 }
