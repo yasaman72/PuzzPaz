@@ -8,16 +8,24 @@ public class LevelManager : MonoBehaviour
 
     public Level[] levels;
     public int currentLevelIndex;
-    public GameObject gameOverObj;
+    [Header("Game Over")]
+    public GameObject gameOverWin;
+    public GameObject gameOverLose;
+    public GameObject finalGameOverObj;
+    public Image[] gameOverStars;
+    public Sprite gainedStar, emptyStar;
+    public PersianText overRewardTxt, levelCountTxt;
+    [Space]
     public GameObject blockerObj;
     public GameObject inGame, GameMenu;
     public Slider levelGoalSlider;
     public GameData gameData;
     public OrderHandler orderHandler;
     public GameBoardManager gameBoardManager;
+    public InGameManager inGameManager;
     public Image[] goalStars;
     public Sprite filledStar, EmptyStar;
-    public PersianText gameOverTxt;
+
     public Slider moodSlider;
     [Tooltip("rewardAmount += (DishRewardAmount / sadCustomerPenalty)")]
     public int sadCustomerPenalty;
@@ -28,24 +36,50 @@ public class LevelManager : MonoBehaviour
     private int rewardAmount;
     private int[] levelCoinGoals = { 0, 0, 0 };
     private bool wonTheLevel;
+    [Space, Header("Effects")]
+    public GameObject rewardGameObj;
+    public PersianText rewardAmountTxt;
+    public ParticleSystem rewardParticleSystem;
+    [Space, Header("Continue")]
+    public int moreMovesAmount;
+    public int continuePrice;
+    public PersianText continuePriceTxt;
+
+    public static bool finishedTheCurrentLevel;
+
+    public void RestartLevel()
+    {
+        SetLevel(currentLevelIndex);
+    }
+
+    private bool hasUsedContinue;
 
     public void SetLevel(int levelIndex)
     {
+        hasUsedContinue = false;
+        finishedTheCurrentLevel = false;
+
+        rewardGameObj.SetActive(false);
+
         if (gameData.levelDatas[levelIndex].lvlState < 0)
         {
             Debug.Log("This level is not available!!");
             return;
         }
 
-
         inGame.SetActive(true);
         GameMenu.SetActive(false);
+
+        continuePriceTxt._rawText = continuePrice.ToString();
+        continuePriceTxt.enabled = false;
+        continuePriceTxt.enabled = true;
 
         currentLevelIndex = levelIndex;
         moveAmountText._rawText = levels[currentLevelIndex].moves.ToString();
         moveAmountText.enabled = false;
         moveAmountText.enabled = true;
-        gameOverObj.SetActive(false);
+        gameOverWin.SetActive(false);
+        gameOverLose.SetActive(false);
 
         coinAmountText._rawText = "0";
         coinAmountText.enabled = false;
@@ -68,26 +102,38 @@ public class LevelManager : MonoBehaviour
 
         usedMoves = 0;
         wonTheLevel = false;
-        
+
         gameBoardManager.NewBoard();
         orderHandler.StartTheDay();
     }
 
-    public void MadeAMove(int moves)
+    public void MadeAMove()
     {
-        usedMoves = moves;
+        usedMoves++;
         CheckAndChangeLevelState();
+    }
+
+    public bool GetLevelState()
+    {
+        return finishedTheCurrentLevel;
+    }
+    public void SetLevelState(bool levelState)
+    {
+        finishedTheCurrentLevel = levelState;
     }
 
     public void FinishedADish(int DishRewardAmount)
     {
-        //check customer mood and add reward
-        if (moodSlider.value >= 0.3)
-            rewardAmount += DishRewardAmount;
-        else
-        {
-            rewardAmount += Mathf.CeilToInt(DishRewardAmount / sadCustomerPenalty);
-        }
+        Debug.Log("Reward Amount before:" + rewardAmount);
+        rewardAmount += Mathf.FloorToInt(DishRewardAmount * (moodSlider.value + 0.3f));
+        Debug.Log("Order Reward Amount:" + Mathf.FloorToInt(DishRewardAmount * (moodSlider.value + 0.3f)));
+        Debug.Log("Reward Amount after:" + rewardAmount);
+        rewardGameObj.SetActive(true);
+        rewardAmountTxt._rawText = (Mathf.FloorToInt(DishRewardAmount * (moodSlider.value + 0.3f))).ToString();
+        rewardAmountTxt.enabled = false;
+        rewardAmountTxt.enabled = true;
+        rewardParticleSystem.Play();
+
         coinAmountText._rawText = rewardAmount.ToString();
         coinAmountText.enabled = false;
         coinAmountText.enabled = true;
@@ -112,25 +158,26 @@ public class LevelManager : MonoBehaviour
         moveAmountText._rawText = (levels[currentLevelIndex].moves - usedMoves).ToString();
         moveAmountText.enabled = false;
         moveAmountText.enabled = true;
+        Debug.Log("Used moves: " + usedMoves);
+        Debug.Log("Remained moves: " + (levels[currentLevelIndex].moves - usedMoves));
 
-        if (levels[currentLevelIndex].moves <= usedMoves)
+        if (levels[currentLevelIndex].moves <= usedMoves && !finishedTheCurrentLevel) 
         {
             blockerObj.SetActive(true);
             Debug.Log("Used all the moves");
-            Invoke("FinishedLevel", 1f);
+            FinishedLevel();
+            //Invoke("FinishedLevel", 1f);
         }
     }
 
-    //takes true for a success and false for failure
     public void FinishedLevel()
-    {
+    {       
         blockerObj.SetActive(false);
-        gameOverObj.SetActive(true);
 
         //checking game result
         if (wonTheLevel)
         {
-            gameOverTxt._rawText = "ایول بردی!";
+            gameOverWin.SetActive(true);
 
             int gainedStars;
             if (levelGoalSlider.value >= 1)
@@ -140,13 +187,57 @@ public class LevelManager : MonoBehaviour
             else
                 gainedStars = 1;
 
+            for (int i = 0; i < 3; i++)
+                gameOverStars[i].sprite = emptyStar;
+            for (int i = 0; i < gainedStars; i++)
+                gameOverStars[i].sprite = gainedStar;
+
+            overRewardTxt._rawText = rewardAmount.ToString();
+            overRewardTxt.enabled = false;
+            overRewardTxt.enabled = true;
+
+            levelCountTxt._rawText = "مرحله " + (currentLevelIndex + 1).ToString();
+            levelCountTxt.enabled = false;
+            levelCountTxt.enabled = true;
+
+            inGameManager.AddCurrency(rewardAmount, 0);
+
             gameData.SetUpNewPlayerLevelData(currentLevelIndex, gainedStars, rewardAmount);
         }
         else
         {
-            gameOverTxt._rawText = "باختی جانم!";
+            if (!hasUsedContinue)
+            {
+                gameOverLose.SetActive(true);
+                hasUsedContinue = true;
+            }
+            else
+                finalGameOverObj.SetActive(true);
         }
-        gameOverTxt.enabled = false;
-        gameOverTxt.enabled = true;
+    }
+
+    public void ContinuePlaying()
+    {
+        if (PlayerPrefs.GetInt("playerGems") >= continuePrice)
+        {
+            /////////////////////////////////////////////////////////////////////////////////////
+            //PlayerPrefs.SetInt("playerGems", PlayerPrefs.GetInt("playerGems") - continuePrice);
+
+            usedMoves -= moreMovesAmount;
+            moveAmountText._rawText = usedMoves.ToString();
+            moveAmountText.enabled = false;
+            moveAmountText.enabled = true;
+            gameOverLose.SetActive(false);
+
+            finishedTheCurrentLevel = false;
+
+            CheckAndChangeLevelState();
+            orderHandler.ContinueTheGame();
+            //orderHandler.StartTheDay();
+        }
+        else
+        {
+            Debug.Log("Not enough gems to continue.");
+        }
     }
 }

@@ -27,6 +27,7 @@ public class GameBoardManager : MonoBehaviour
 
     void Start()
     {
+
         boardText.text = "";
 
         for (int i = 0; i < tileListSize; i++)
@@ -56,6 +57,7 @@ public class GameBoardManager : MonoBehaviour
 
     public void CheckClickedTile(int index)
     {
+        thisGameMoves++;
         List<Tile> SimilarTilesList = new List<Tile>();
 
         //add the selected tile itself to the list of objects to change
@@ -78,9 +80,6 @@ public class GameBoardManager : MonoBehaviour
         //check if there are 3 adjacent similar tiles
         if (SimilarTilesList.Count >= 2)
         {
-            thisGameMoves++;
-            levelManager.MadeAMove(thisGameMoves);
-
             blockingObj.SetActive(true);
             StartCoroutine("DisableBlocker");
             //Debug.Log("Type: " + type + " index: " + index + " Similar Tiles: " + SimilarTilesList.Count);
@@ -93,10 +92,8 @@ public class GameBoardManager : MonoBehaviour
             //    Debug.Log((simGameObject.GetComponent<Tile>().myIndex));
             //}
 
-
             gameLogicManager.CountDestroyedTilesByType(SimilarTilesList.Count, ingredients[type]);
             bool wasSomthingFromOrder = orderHandler.ChangeRequirementsAmount(SimilarTilesList.Count, ingredients[type]);
-
 
             //changing the type and sprite of matching tiles
             foreach (Tile adjacent in SimilarTilesList)
@@ -143,6 +140,10 @@ public class GameBoardManager : MonoBehaviour
 
                 //ShuffleTiles();
             }
+
+            orderHandler.ChangeCustomerMood();
+
+            levelManager.MadeAMove();
         }
     }
 

@@ -14,18 +14,23 @@ public class GameMenuManager : MonoBehaviour
     public Transform levelsContainer;
     public LevelManager levelManager;
     public GameData gameData;
-    
-    private List<GameObject> levelNodes = new List<GameObject>();
 
-    private void Start()
+    private int myLevelCount;
+
+    private List<GameObject> levelNodes;
+
+    public void MakeLevelNodes(int levelCount)
     {
-        for (int i = 0; i < levelsLine.positionCount; i++)
+        levelNodes = new List<GameObject>();
+        myLevelCount = levelCount;
+
+        for (int i = 0; i < levelCount; i++)
         {
             GameObject newLevel = Instantiate(levelNodeObj, levelsContainer);
 
             newLevel.GetComponent<RectTransform>().anchoredPosition = new Vector2(levelsLine.GetPosition(i).x, levelsLine.GetPosition(i).y);
             newLevel.transform.GetChild(0).GetComponent<Image>().color = future;
-            newLevel.transform.GetChild(1).GetComponent<Text>().text = (i+1).ToString();
+            newLevel.transform.GetChild(1).GetComponent<Text>().text = (i + 1).ToString();
             newLevel.transform.GetChild(2).gameObject.SetActive(false);
 
             int j = i;
@@ -37,11 +42,14 @@ public class GameMenuManager : MonoBehaviour
         gameData.SetInitialLevel(levelNodes);
     }
 
-    public void SetUpLevelStars(int levelIndex, int stars)
+    public void SetUpLevelStarsAndShape(int levelIndex, int stars, bool initial)
     {
-        levelNodes[levelIndex].transform.GetChild(0).GetComponent<Image>().color = passed;
-        if(levelNodes[levelIndex + 1] != null)
-        levelNodes[levelIndex+1].transform.GetChild(0).GetComponent<Image>().color = current;
+        if (!initial)
+        {
+            levelNodes[levelIndex].transform.GetChild(0).GetComponent<Image>().color = passed;
+            if (levelIndex + 1 < myLevelCount)
+                levelNodes[PlayerPrefs.GetInt("CurrentLvl")].transform.GetChild(0).GetComponent<Image>().color = current;
+        }
 
         GameObject starsHolder = levelNodes[levelIndex].transform.GetChild(2).gameObject;
         starsHolder.SetActive(true);

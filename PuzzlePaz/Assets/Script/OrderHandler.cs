@@ -48,7 +48,9 @@ public class OrderHandler : MonoBehaviour
         customerImageInt = Random.Range(0, customerImages.Length);
         customerObj.GetComponent<Image>().sprite = customerImages[customerImageInt];
 
+        customerAnimator.Rebind();
         customerAnimator.SetTrigger("Enter");
+        bubbleAnimator.Rebind();
         bubbleAnimator.SetTrigger("Enter");
 
         ordersHolder = new List<int>();
@@ -57,6 +59,21 @@ public class OrderHandler : MonoBehaviour
         GoToNextDish();
     }
 
+    public void ContinueTheGame()
+    {
+        ordersCounter = 0;
+        dishIndex = 0;
+        ordersHolder = new List<int>();
+        orderIndex = NextOrderIndex();
+
+        if (customerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Customer Exit Animation"))
+        {
+            //bubbleAnimator.Rebind();
+            //GoToNextDish();
+            ShowTheNewCustomer();
+            //bubbleAnimator.SetTrigger("Enter");
+        }
+    }
 
     public void GoToNextOrder()
     {
@@ -67,9 +84,13 @@ public class OrderHandler : MonoBehaviour
 
         if (ordersCounter >= orders.Length)
         {
-            Debug.Log("Finished the level!");
-            levelManager.FinishedLevel();           
-            return;
+            if (!levelManager.GetLevelState())
+            {
+                Debug.Log("Finished the level!");
+                levelManager.FinishedLevel();
+                levelManager.SetLevelState(true);
+                return;
+            }
         }
         dishIndex = 0;
         orderIndex = NextOrderIndex();
@@ -213,6 +234,11 @@ public class OrderHandler : MonoBehaviour
             }
         }
 
+        return madeAnOrderInger;
+    }
+
+    public void ChangeCustomerMood()
+    {
         //      Checks Customer Mood
         moodSlider.value -= ModeMinus;
 
@@ -227,8 +253,6 @@ public class OrderHandler : MonoBehaviour
             sliderFill.color = happy;
         else
             sliderFill.color = superHappy;
-
-        return madeAnOrderInger;
     }
 
     private void CheckDishFinish()

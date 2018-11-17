@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: level 8
   levelIndex: 0
-  moves: 50
+  moves: 30
   difficultyLevel: 0
   ordersList:
   - {fileID: 11400000, guid: bb01fb11e053f174dbce2112df9a27fa, type: 2}

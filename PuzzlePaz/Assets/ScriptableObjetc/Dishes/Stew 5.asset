@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Stew 5
   m_EditorClassIdentifier: 
   name: Lazania
-  sprite: {fileID: 21300000, guid: 4aced115373bd3b45a2d3df849e68043, type: 3}
+  sprite: {fileID: 21300000, guid: 600876e77fd010c4e817876a8cd266f1, type: 3}
   ingredients:
   - ingredient: {fileID: 11400000, guid: 4b08d8a912724d746a00748e96f84140, type: 2}
     Amount: 6
