@@ -341,7 +341,7 @@ public class GameBoardManager : MonoBehaviour
     public void ShuffleTiles()
     {
         boardText.text = "";
-        Debug.Log("Shuffling!");
+        //Debug.Log("Shuffling!");
 
         //create a list of index of spaces that have not been changed
         List<int> emptySpaces = new List<int>();

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class OrderHandler : MonoBehaviour
 {
     public GameObject blockingObj;
+    public PersianText customerCounterTxt;
     public LevelManager levelManager;
     [Space]
     public Image dishImage;
@@ -48,6 +49,10 @@ public class OrderHandler : MonoBehaviour
         customerImageInt = Random.Range(0, customerImages.Length);
         customerObj.GetComponent<Image>().sprite = customerImages[customerImageInt];
 
+        customerCounterTxt._rawText = (orders.Length-1).ToString();
+        customerCounterTxt.enabled = false;
+        customerCounterTxt.enabled = true;
+
         customerAnimator.Rebind();
         customerAnimator.SetTrigger("Enter");
         bubbleAnimator.Rebind();
@@ -70,6 +75,7 @@ public class OrderHandler : MonoBehaviour
         {
             //bubbleAnimator.Rebind();
             //GoToNextDish();
+            collectedIngredientsIndex.Clear();
             ShowTheNewCustomer();
             //bubbleAnimator.SetTrigger("Enter");
         }
@@ -78,6 +84,10 @@ public class OrderHandler : MonoBehaviour
     public void GoToNextOrder()
     {
         ordersCounter++;
+
+        customerCounterTxt._rawText = (orders.Length - ordersCounter -1).ToString();
+        customerCounterTxt.enabled = false;
+        customerCounterTxt.enabled = true;
 
         bubbleAnimator.SetTrigger("Exit");
         customerAnimator.SetTrigger("Exit");

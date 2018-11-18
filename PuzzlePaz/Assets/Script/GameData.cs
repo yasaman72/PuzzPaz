@@ -147,7 +147,7 @@ public class GameData : MonoBehaviour
             {
                 PlayerPrefs.SetInt("SavedGame", 1);
             }
-            Debug.Log("Saved Data!!!");
+            //Debug.Log("Saved Data!!!");
         }
     }
 
@@ -163,7 +163,7 @@ public class GameData : MonoBehaviour
             {
                 levelDatas[i] = JsonUtility.FromJson<LevelData>(jsonChunks[i]);
             }
-            Debug.Log("Loaded Data!!");
+            //Debug.Log("Loaded Data!!");
         }
     }
 }

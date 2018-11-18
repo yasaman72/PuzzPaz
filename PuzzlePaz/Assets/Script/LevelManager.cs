@@ -49,23 +49,39 @@ public class LevelManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        SetLevel(currentLevelIndex);
+        if (PlayerPrefs.GetInt("ActiveHearts") < 1)
+        {
+            finalGameOverObj.SetActive(false);
+            SetLevel(currentLevelIndex);
+        }
+        else
+        {
+            Debug.Log("Not enough hearts!!");
+            return;
+        }
     }
 
     private bool hasUsedContinue;
 
     public void SetLevel(int levelIndex)
     {
-        hasUsedContinue = false;
-        finishedTheCurrentLevel = false;
-
-        rewardGameObj.SetActive(false);
-
         if (gameData.levelDatas[levelIndex].lvlState < 0)
         {
             Debug.Log("This level is not available!!");
             return;
         }
+
+        if(PlayerPrefs.GetInt("ActiveHearts") < 1)
+        {
+            Debug.Log("Not enough hearts!!");
+            return;
+        }
+
+
+        hasUsedContinue = false;
+        finishedTheCurrentLevel = false;
+
+        rewardGameObj.SetActive(false);
 
         inGame.SetActive(true);
         GameMenu.SetActive(false);
@@ -86,11 +102,11 @@ public class LevelManager : MonoBehaviour
         coinAmountText.enabled = true;
 
         levelCoinGoals[0] = levels[currentLevelIndex].GetLevelGoals(0);
-        Debug.Log("goal 1: " + levelCoinGoals[0]);
+        //Debug.Log("goal 1: " + levelCoinGoals[0]);
         levelCoinGoals[1] = levels[currentLevelIndex].GetLevelGoals(1);
-        Debug.Log("goal 2: " + levelCoinGoals[1]);
+        //Debug.Log("goal 2: " + levelCoinGoals[1]);
         levelCoinGoals[2] = levels[currentLevelIndex].GetLevelGoals(2);
-        Debug.Log("goal 3: " + levelCoinGoals[2]);
+        //Debug.Log("goal 3: " + levelCoinGoals[2]);
 
         foreach (Image star in goalStars)
         {
@@ -158,10 +174,10 @@ public class LevelManager : MonoBehaviour
         moveAmountText._rawText = (levels[currentLevelIndex].moves - usedMoves).ToString();
         moveAmountText.enabled = false;
         moveAmountText.enabled = true;
-        Debug.Log("Used moves: " + usedMoves);
-        Debug.Log("Remained moves: " + (levels[currentLevelIndex].moves - usedMoves));
+        //Debug.Log("Used moves: " + usedMoves);
+        //Debug.Log("Remained moves: " + (levels[currentLevelIndex].moves - usedMoves));
 
-        if (levels[currentLevelIndex].moves <= usedMoves && !finishedTheCurrentLevel) 
+        if (levels[currentLevelIndex].moves <= usedMoves && !finishedTheCurrentLevel)
         {
             blockerObj.SetActive(true);
             Debug.Log("Used all the moves");
@@ -171,7 +187,7 @@ public class LevelManager : MonoBehaviour
     }
 
     public void FinishedLevel()
-    {       
+    {
         blockerObj.SetActive(false);
 
         //checking game result
@@ -206,13 +222,17 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
+            inGameManager.ChangeHeartAmount(-1);
+
             if (!hasUsedContinue)
             {
                 gameOverLose.SetActive(true);
                 hasUsedContinue = true;
             }
             else
+            {
                 finalGameOverObj.SetActive(true);
+            }
         }
     }
 
@@ -220,13 +240,14 @@ public class LevelManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("playerGems") >= continuePrice)
         {
-            /////////////////////////////////////////////////////////////////////////////////////
-            //PlayerPrefs.SetInt("playerGems", PlayerPrefs.GetInt("playerGems") - continuePrice);
+            PlayerPrefs.SetInt("playerGems", PlayerPrefs.GetInt("playerGems") - continuePrice);
+            inGameManager.ChangeHeartAmount(1);
 
             usedMoves -= moreMovesAmount;
             moveAmountText._rawText = usedMoves.ToString();
             moveAmountText.enabled = false;
             moveAmountText.enabled = true;
+
             gameOverLose.SetActive(false);
 
             finishedTheCurrentLevel = false;

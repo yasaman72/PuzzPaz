@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class GameMenuManager : MonoBehaviour
 {
-
     public int levelsCount;
     public Color passed, current, future;
     public Sprite gainedStar, notGainedStar;
@@ -13,6 +12,7 @@ public class GameMenuManager : MonoBehaviour
     public GameObject levelNodeObj;
     public Transform levelsContainer;
     public LevelManager levelManager;
+    public InGameManager inGameManager;
     public GameData gameData;
 
     private int myLevelCount;
@@ -62,4 +62,5 @@ public class GameMenuManager : MonoBehaviour
                 starsHolder.transform.GetChild(i).GetComponent<Image>().sprite = notGainedStar;
         }
     }
+
 }
