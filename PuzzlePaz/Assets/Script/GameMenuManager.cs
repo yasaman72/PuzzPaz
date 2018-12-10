@@ -29,8 +29,8 @@ public class GameMenuManager : MonoBehaviour
             GameObject newLevel = Instantiate(levelNodeObj, levelsContainer);
 
             newLevel.GetComponent<RectTransform>().anchoredPosition = new Vector2(levelsLine.GetPosition(i).x, levelsLine.GetPosition(i).y);
-            newLevel.transform.GetChild(0).GetComponent<Image>().color = future;
-            newLevel.transform.GetChild(1).GetComponent<Text>().text = (i + 1).ToString();
+            newLevel.transform.GetChild(1).GetComponent<Image>().color = future;
+            newLevel.transform.GetChild(1).transform.transform.GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
             newLevel.transform.GetChild(2).gameObject.SetActive(false);
 
             int j = i;
@@ -47,8 +47,14 @@ public class GameMenuManager : MonoBehaviour
         if (!initial)
         {
             levelNodes[levelIndex].transform.GetChild(0).GetComponent<Image>().color = passed;
+            levelNodes[levelIndex].transform.GetChild(1).gameObject.SetActive(false);
+
             if (levelIndex + 1 < myLevelCount)
+            {
                 levelNodes[PlayerPrefs.GetInt("CurrentLvl")].transform.GetChild(0).GetComponent<Image>().color = current;
+                levelNodes[levelIndex + 1].transform.GetChild(1).gameObject.SetActive(true);
+                levelNodes[levelIndex + 1].transform.GetChild(2).gameObject.SetActive(false);
+            }
         }
 
         GameObject starsHolder = levelNodes[levelIndex].transform.GetChild(2).gameObject;

@@ -216,21 +216,33 @@ public class LevelManager : MonoBehaviour
             levelCountTxt.enabled = false;
             levelCountTxt.enabled = true;
 
+            //Game Analytics progression data update
+            GameAnalyticsManager.Instance.SendProgressionEvent(2, "world0", "level" + (currentLevelIndex + 1));
+
+            //adding level reward coins
             inGameManager.AddCurrency(rewardAmount, 0);
+            GameAnalyticsManager.Instance.SendResourceEvent(1, "Coin", rewardAmount, "LevelReward", "LevelCoinReward");
 
             gameData.SetUpNewPlayerLevelData(currentLevelIndex, gainedStars, rewardAmount);
         }
         else
         {
+            //Game Analytics progression data update
+            GameAnalyticsManager.Instance.SendProgressionEvent(3, "world 0", "level " + (currentLevelIndex + 1));
+
             inGameManager.ChangeHeartAmount(-1);
 
             if (!hasUsedContinue)
             {
+                GameAnalyticsManager.Instance.SendDesignEvents("InGame:Continue:didn'tContinue");
+
                 gameOverLose.SetActive(true);
                 hasUsedContinue = true;
             }
             else
             {
+                GameAnalyticsManager.Instance.SendDesignEvents("InGame:Continue:Continued");
+
                 finalGameOverObj.SetActive(true);
             }
         }
@@ -240,6 +252,8 @@ public class LevelManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("playerGems") >= continuePrice)
         {
+            GameAnalyticsManager.Instance.SendDesignEvents("InGame:Continue:UsedContinue");
+
             PlayerPrefs.SetInt("playerGems", PlayerPrefs.GetInt("playerGems") - continuePrice);
             inGameManager.ChangeHeartAmount(1);
 
@@ -258,7 +272,9 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not enough gems to continue.");
+            GameAnalyticsManager.Instance.SendDesignEvents("InGame:Continue:NoGemToContinue");
+
+            Debug.Log("Not enough gem to continue.");
         }
     }
 }

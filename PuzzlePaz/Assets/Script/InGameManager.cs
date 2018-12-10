@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using GameAnalyticsSDK;
 
 
 public class InGameManager : MonoBehaviour
@@ -22,6 +23,7 @@ public class InGameManager : MonoBehaviour
 
     private void Start()
     {
+        GameAnalytics.Initialize();
 
         //setuping player initial currencies
         if (!PlayerPrefs.HasKey("alreadyPlyaed"))
@@ -30,6 +32,9 @@ public class InGameManager : MonoBehaviour
             PlayerPrefs.SetInt("playerCoins", initialCoin);
             PlayerPrefs.SetInt("playerGems", initialGem);
             PlayerPrefs.SetInt("ActiveHearts", maxHeart);
+
+            //setting player's dimention
+            GameAnalytics.SetCustomDimension01("MainGroup");
         }
 
         coinAmountTxt._rawText = PlayerPrefs.GetInt("playerCoins").ToString();

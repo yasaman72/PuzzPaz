@@ -64,17 +64,24 @@ public class GameData : MonoBehaviour
             //check if player has not yet passed the level
             if (levelDatas[i].lvlState < 0)
             {
-                levelNodes[i].transform.GetChild(0).GetComponent<Image>().color = gameMenuManager.future;
+                //future nodes
+                //levelNodes[i].transform.GetChild(0).GetComponent<Image>().color = gameMenuManager.future;
+                levelNodes[i].transform.GetChild(1).gameObject.SetActive(false);
             }
             else if (levelDatas[i].lvlState == 0)
             {
-                levelNodes[i].transform.GetChild(0).GetComponent<Image>().color = gameMenuManager.current;
+                //current level settings
+                //levelNodes[i].transform.GetChild(0).GetComponent<Image>().color = gameMenuManager.current;
+                levelNodes[i].transform.GetChild(1).gameObject.SetActive(true);
                 gameMenuManager.SetUpLevelStarsAndShape(i, levelDatas[i].starsAmount, true);
+                levelNodes[i].transform.GetChild(2).gameObject.SetActive(false);
 
             }
             else
             {
-                levelNodes[i].transform.GetChild(0).GetComponent<Image>().color = gameMenuManager.passed;
+                //passed level settings
+                //levelNodes[i].transform.GetChild(0).GetComponent<Image>().color = gameMenuManager.passed;
+                levelNodes[i].transform.GetChild(1).gameObject.SetActive(false);
                 gameMenuManager.SetUpLevelStarsAndShape(i, levelDatas[i].starsAmount, true);
 
             }
@@ -164,6 +171,11 @@ public class GameData : MonoBehaviour
                 levelDatas[i] = JsonUtility.FromJson<LevelData>(jsonChunks[i]);
             }
             //Debug.Log("Loaded Data!!");
+        } else
+        {
+            string errorMessage = "levelsData JSON file doesn't exist!";
+            Debug.Log(errorMessage);
+            GameAnalyticsManager.Instance.SendErrorEvent(5, errorMessage);
         }
     }
 }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="ir.tapsell.tapsellvideosdk" android:versionCode="1" android:versionName="1.0">
+  <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="28" />
+  <supports-screens android:smallScreens="true" android:normalScreens="true" android:largeScreens="true" android:xlargeScreens="true" android:anyDensity="true" />
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <!-- ============================== CafeBazaar is here ============================== -->
+  <!--<uses-permission android:name="com.farsitel.bazaar.permission.PAY_THROUGH_BAZAAR" />-->
+  <!-- ================================================================================ -->
+  <!-- ============================== Myket is here ============================== -->
+  <!--<uses-permission android:name="ir.mservices.market.BILLING" />-->
+  <!-- =========================================================================== -->
+  <!-- ============================== IranApps is here ============================== -->
+  <!--<uses-permission android:name="ir.tgbs.iranapps.permission.BILLING" />-->
+  <!-- ============================================================================== -->
+  <application android:icon="@drawable/app_icon" android:label="@string/app_name" android:debuggable="false" android:theme="@style/UnityThemeSelector" android:supportsRtl="true" android:allowBackup="false" android:fullBackupContent="false">
+    <!-- ============================== FireBase is here ============================== -->
+    <activity android:name="com.google.firebase.MessagingUnityPlayerActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+      </intent-filter>
+      <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+    </activity>
+    <service android:name="com.google.firebase.messaging.MessageForwardingService" android:exported="false" />
+    <!-- ============================================================================== -->
+    <activity android:name="com.unity3d.player.UnityPlayerNativeActivity" android:label="@string/app_name" android:screenOrientation="fullSensor" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+        <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+      </intent-filter>
+      <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+      <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="true" />
+    </activity>
+    <activity android:name="ir.tapsell.sdk.TapsellAdActivity" android:configChanges="keyboardHidden|orientation|screenSize" />
+    <activity android:name="com.tapligh.unitysdk.TaplighUnity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+    <meta-data android:name="unityplayer.SkipPermissionsDialog" android:value="true" />
+    <!-- ============================== CafeBazaar is here ============================== -->
+    <!--<meta-data android:name="billing.service" android:value="bazaar.BazaarIabService" />-->
+    <!--<activity android:name="com.bazaar.BazaarIABProxyActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />-->
+    <!-- ================================================================================ -->
+    <!-- ============================== Myket is here ============================== -->
+    <!--<activity android:name="ir.myket.unity.iab.MyketBillingService$IabActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" android:configChanges="orientation|screenSize|keyboardHidden"/>-->
+    <!-- =========================================================================== -->
+    <!-- ============================== IranApps is here ============================== -->
+    <!--<activity android:name="ir.tgbs.iranapps.billing.unityhelper.iranappsbillingactivity" android:theme="@style/invisible"/>-->
+    <!-- ============================================================================== -->
+    <activity android:name="com.tapligh.sdk.ADView.Tapligh" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+    <activity android:name="com.tapligh.sdk.ADView.ADView" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+    <receiver android:name="com.tapligh.sdk.ADView.ADsReceiver">
+      <intent-filter android:priority="999">
+        <action android:name="android.intent.action.PACKAGE_INSTALL" />
+        <action android:name="android.intent.action.PACKAGE_ADDED" />
+        <action android:name="android.intent.action.PACKAGE_REMOVED" />
+        <data android:scheme="package" />
+      </intent-filter>
+    </receiver>
+    <meta-data android:name="billing.service" android:value="jhoobin.JhoobinIabService" />
+    <activity android:name="com.bazaar.BazaarIABProxyActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+    <receiver android:name="net.agasper.unitynotification.UnityNotificationManager">
+    </receiver>
+    <receiver android:name="net.agasper.unitynotification.UnityNotificationActionHandler">
+    </receiver>
+  </application>
+  <uses-permission android:name="com.farsitel.bazaar.permission.PAY_THROUGH_BAZAAR" />
+</manifest>
