@@ -6,6 +6,29 @@ using BazaarPlugin;
 public class ShopManager : MonoBehaviour
 {
 #if UNITY_ANDROID
+    //public enum SkuNames
+    //{
+    //    SomeCoins
+    //}
+
+    //public Dictionary<SkuNames, string> SkuNamesDictionary = new Dictionary<SkuNames, string>();
+
+
+    private void Start()
+    {
+        string key = "MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwCs/topXMZorj7EhSkUjYwnSerOb0CfPHDyNNoMEhN01RTEUiVz8AoDzWVgU64LIjZHqlP8Y4mlID1CisAgC23pcQaNgwGlBJJdZiynzIYOe44W1bObJ3e0C1IN5dyOyT/tbE2S1xvbTVx1YyWA4QYo5LPcxQ1yJBIvfhio19aIzqYx9GVrVCBZXodQyINRCnnBSSwZ1jiSBrQN1EocGU5mCyRMH3MBHZa/GAb+vmsCAwEAAQ==";
+        BazaarIAB.init(key);
+
+        //SkuNamesDictionary = new Dictionary<SkuNames, string>();
+        //SkuNamesDictionary.Add(SkuNames.SomeCoins, "Coin_100");
+    }
+
+    public void OnBuyCoinPackBtnClicked(string sku)
+    {
+        BazaarIAB.purchaseProduct(sku);
+    }
+
+    #region event listeners
 
     void OnEnable()
     {
@@ -106,12 +129,25 @@ public class ShopManager : MonoBehaviour
 
     void purchaseSucceededEvent(BazaarPurchase purchase)
     {
-        Debug.Log("purchaseSucceededEvent: " + purchase);
+        Debug.Log("purchase Succeeded Event: " + purchase);
+
+        BazaarIAB.consumeProduct(purchase.ProductId);
+
+        switch (purchase.ProductId)
+        {
+            case "Coin_100":
+                {
+                    //todo: give player the coins...
+                    break;
+                }
+        }
     }
 
     void purchaseFailedEvent(string error)
     {
         Debug.Log("purchaseFailedEvent: " + error);
+
+        //todo: inform the player about the purchase fail in a popup
     }
 
     void consumePurchaseSucceededEvent(BazaarPurchase purchase)
@@ -123,6 +159,7 @@ public class ShopManager : MonoBehaviour
     {
         Debug.Log("consumePurchaseFailedEvent: " + error);
     }
+    #endregion
 
 #endif
 }
