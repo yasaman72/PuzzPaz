@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using GameAnalyticsSDK;
+using TapsellSDK;
 
 
 public class InGameManager : MonoBehaviour
@@ -21,28 +22,42 @@ public class InGameManager : MonoBehaviour
     public int maxHeart;
     public GameObject notEnoughHeartPopup;
 
+    public GameObject crossSign;
+
     private void Start()
     {
-        GameAnalytics.Initialize();
+        GameAnalytics.Initialize();        
 
         //setuping player initial currencies
         if (!PlayerPrefs.HasKey("alreadyPlyaed"))
         {
             PlayerPrefs.SetInt("alreadyPlyaed", 1);
             PlayerPrefs.SetInt("playerCoins", initialCoin);
-            PlayerPrefs.SetInt("playerGems", initialGem);
+            //PlayerPrefs.SetInt("playerGems", initialGem);
             PlayerPrefs.SetInt("ActiveHearts", maxHeart);
-
+            PlayerPrefs.SetInt("soundState", 1);
             //setting player's dimention
             GameAnalytics.SetCustomDimension01("MainGroup");
         }
 
+        //set currencies UI
         coinAmountTxt._rawText = PlayerPrefs.GetInt("playerCoins").ToString();
         coinAmountTxt.enabled = false;
         coinAmountTxt.enabled = true;
-        gemAmountTxt._rawText = PlayerPrefs.GetInt("playerGems").ToString();
-        gemAmountTxt.enabled = false;
-        gemAmountTxt.enabled = true;
+        //gemAmountTxt._rawText = PlayerPrefs.GetInt("playerGems").ToString();
+        //gemAmountTxt.enabled = false;
+        //gemAmountTxt.enabled = true;
+
+        //change sound state
+        if (PlayerPrefs.GetInt("soundState") == 1)
+        {
+            AudioListener.pause = false;
+            crossSign.SetActive(false);
+        } else if (PlayerPrefs.GetInt("soundState") == 0)
+        {
+            AudioListener.pause = true;
+            crossSign.SetActive(true);
+        }
 
         //adding more hearts based on time passed should be here
         ChangeHeartAmount(0);
@@ -88,14 +103,14 @@ public class InGameManager : MonoBehaviour
     public void AddCurrency(int addedCoinAmount, int addedGemAmount)
     {
         PlayerPrefs.SetInt("playerCoins", PlayerPrefs.GetInt("playerCoins") + addedCoinAmount);
-        PlayerPrefs.SetInt("playerGems", PlayerPrefs.GetInt("playerGems") + addedGemAmount);
+        //PlayerPrefs.SetInt("playerGems", PlayerPrefs.GetInt("playerGems") + addedGemAmount);
 
         coinAmountTxt._rawText = PlayerPrefs.GetInt("playerCoins").ToString();
         coinAmountTxt.enabled = false;
         coinAmountTxt.enabled = true;
-        gemAmountTxt._rawText = PlayerPrefs.GetInt("playerGems").ToString();
-        gemAmountTxt.enabled = false;
-        gemAmountTxt.enabled = true;
+        //gemAmountTxt._rawText = PlayerPrefs.GetInt("playerGems").ToString();
+        //gemAmountTxt.enabled = false;
+        //gemAmountTxt.enabled = true;
     }
 
     public void ChangeHeartAmount(int heartAmount)

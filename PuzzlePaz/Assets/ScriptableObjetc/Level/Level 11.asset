@@ -16,7 +16,8 @@ MonoBehaviour:
   moves: 30
   difficultyLevel: 0
   ordersList:
+  - {fileID: 11400000, guid: 66e73294c8a8eef4aa3c836160bb8aa7, type: 2}
+  - {fileID: 11400000, guid: 66e73294c8a8eef4aa3c836160bb8aa7, type: 2}
   - {fileID: 11400000, guid: bb01fb11e053f174dbce2112df9a27fa, type: 2}
   - {fileID: 11400000, guid: bb01fb11e053f174dbce2112df9a27fa, type: 2}
-  - {fileID: 11400000, guid: 281adc30217d95644963988c04c782d5, type: 2}
-  - {fileID: 11400000, guid: 4e1336d8ab3430f46b03f534e3b49257, type: 2}
+  - {fileID: 11400000, guid: bb01fb11e053f174dbce2112df9a27fa, type: 2}

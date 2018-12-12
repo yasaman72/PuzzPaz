@@ -16,7 +16,15 @@ MonoBehaviour:
   moves: 30
   difficultyLevel: 0
   ordersList:
-  - {fileID: 11400000, guid: bb01fb11e053f174dbce2112df9a27fa, type: 2}
-  - {fileID: 11400000, guid: bb01fb11e053f174dbce2112df9a27fa, type: 2}
-  - {fileID: 11400000, guid: 281adc30217d95644963988c04c782d5, type: 2}
+  - {fileID: 11400000, guid: 03d5765518e66364bbaa23ff6bca1292, type: 2}
+  - {fileID: 11400000, guid: 03d5765518e66364bbaa23ff6bca1292, type: 2}
+  - {fileID: 11400000, guid: 03d5765518e66364bbaa23ff6bca1292, type: 2}
+  - {fileID: 11400000, guid: 04c0420b40183b44b9d9b7ab3b5d9661, type: 2}
+  - {fileID: 11400000, guid: 04c0420b40183b44b9d9b7ab3b5d9661, type: 2}
+  - {fileID: 11400000, guid: 04c0420b40183b44b9d9b7ab3b5d9661, type: 2}
   - {fileID: 11400000, guid: 4e1336d8ab3430f46b03f534e3b49257, type: 2}
+  - {fileID: 11400000, guid: 4e1336d8ab3430f46b03f534e3b49257, type: 2}
+  - {fileID: 11400000, guid: 4e1336d8ab3430f46b03f534e3b49257, type: 2}
+  - {fileID: 11400000, guid: 281adc30217d95644963988c04c782d5, type: 2}
+  - {fileID: 11400000, guid: 281adc30217d95644963988c04c782d5, type: 2}
+  - {fileID: 11400000, guid: 281adc30217d95644963988c04c782d5, type: 2}

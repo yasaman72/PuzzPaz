@@ -28,6 +28,8 @@ public class OrderHandler : MonoBehaviour
     public List<RequirementsC> requirements;
     [HideInInspector]
     public Dish currentDish;
+    public AudioSource customerAudioSource;
+    public AudioClip happyLeaving;
 
     private int dishIndex;
     private int orderIndex;
@@ -91,6 +93,9 @@ public class OrderHandler : MonoBehaviour
 
         bubbleAnimator.SetTrigger("Exit");
         customerAnimator.SetTrigger("Exit");
+
+        customerAudioSource.clip = happyLeaving;
+        customerAudioSource.Play();
 
         if (ordersCounter >= orders.Length)
         {

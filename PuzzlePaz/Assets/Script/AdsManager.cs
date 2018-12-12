@@ -7,7 +7,7 @@ public class AdsManager : MonoBehaviour
 {
     private void Start()
     {
-        string tapsellAppKey = "";
+        string tapsellAppKey = "nbftmjanbkossihlboslklodjmmeskbbrrrheanmaafcnglnhesmottobmkctttesgdtrd";
         Tapsell.initialize(tapsellAppKey);
     }
 

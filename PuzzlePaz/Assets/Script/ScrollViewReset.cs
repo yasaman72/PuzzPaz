@@ -26,6 +26,5 @@ public class ScrollViewReset : MonoBehaviour {
     public void ResetScrollbar()
     {
         P1Content.GetComponent<ScrollRect>().verticalNormalizedPosition = 1;
-
     }
 }

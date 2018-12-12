@@ -20,7 +20,11 @@ public class GameBoardManager : MonoBehaviour
     [Header("Movement section")]
     public GameObject blockingObj;
 
+    public AudioSource boardAudioSource1;
+    public AudioClip IngredientItemSnd, madeAMatchSnd, wrongClickSnd; 
+
     public List<Tile> tileList = new List<Tile>();
+
 
     private IEnumerator coroutine;
     private int thisGameMoves;
@@ -60,6 +64,9 @@ public class GameBoardManager : MonoBehaviour
         thisGameMoves++;
         List<Tile> SimilarTilesList = new List<Tile>();
 
+        boardAudioSource1.clip = wrongClickSnd;
+        boardAudioSource1.Play();
+
         //add the selected tile itself to the list of objects to change
         SimilarTilesList.Add(tileList[index]);
         tileList[index].isChecked = true;
@@ -80,6 +87,9 @@ public class GameBoardManager : MonoBehaviour
         //check if there are 3 adjacent similar tiles
         if (SimilarTilesList.Count >= 2)
         {
+            boardAudioSource1.clip = madeAMatchSnd;
+            boardAudioSource1.Play();
+
             blockingObj.SetActive(true);
             StartCoroutine("DisableBlocker");
             //Debug.Log("Type: " + type + " index: " + index + " Similar Tiles: " + SimilarTilesList.Count);
@@ -100,7 +110,11 @@ public class GameBoardManager : MonoBehaviour
             {
                 //playing flying animation
                 if (wasSomthingFromOrder)
+                {
                     ingredientsFly.MoveTileToTarget(adjacent.myIndex, type);
+                    boardAudioSource1.clip = IngredientItemSnd;
+                    boardAudioSource1.Play();
+                }
 
                 //check how many similar tiles are upon this one to set the right animation in the next step
                 int upperSimilarTiles = 0;

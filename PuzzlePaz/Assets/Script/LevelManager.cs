@@ -49,6 +49,8 @@ public class LevelManager : MonoBehaviour
 
     public GameObject notEnoughHeartPopup;
 
+    public AudioSource levelSelectionAudioSource;
+
     public void RestartLevel()
     {
         if (PlayerPrefs.GetInt("ActiveHearts") < 1)
@@ -81,6 +83,7 @@ public class LevelManager : MonoBehaviour
             return;
         }
 
+        levelSelectionAudioSource.Play();
 
         hasUsedContinue = false;
         finishedTheCurrentLevel = false;
@@ -254,11 +257,11 @@ public class LevelManager : MonoBehaviour
 
     public void ContinuePlaying()
     {
-        if (PlayerPrefs.GetInt("playerGems") >= continuePrice)
+        if (PlayerPrefs.GetInt("playerCoins") >= continuePrice)
         {
             GameAnalyticsManager.Instance.SendDesignEvents("InGame:Continue:UsedContinue");
 
-            PlayerPrefs.SetInt("playerGems", PlayerPrefs.GetInt("playerGems") - continuePrice);
+            PlayerPrefs.SetInt("playerCoins", PlayerPrefs.GetInt("playerCoins") - continuePrice);
             inGameManager.ChangeHeartAmount(1);
 
             usedMoves -= moreMovesAmount;
@@ -276,9 +279,9 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            GameAnalyticsManager.Instance.SendDesignEvents("InGame:Continue:NoGemToContinue");
+            GameAnalyticsManager.Instance.SendDesignEvents("InGame:Continue:NoCoinToContinue");
 
-            Debug.Log("Not enough gem to continue.");
+            Debug.Log("Not enough coin to continue.");
         }
     }
 }
