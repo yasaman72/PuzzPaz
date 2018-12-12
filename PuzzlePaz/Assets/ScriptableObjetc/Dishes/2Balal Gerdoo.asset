@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50ccb1e506eedce4fae229655eb57a75, type: 3}
+  m_Name: 2Balal Gerdoo
+  m_EditorClassIdentifier: 
+  name: Balal Gerdoo
+  sprite: {fileID: 21300000, guid: 532d3dd7ba05f2b4c8498d0af83f8c6d, type: 3}
+  ingredients:
+  - ingredient: {fileID: 11400000, guid: b02cdaa87b0f0614ba429952e6e1bfa8, type: 2}
+    Amount: 10
+  - ingredient: {fileID: 11400000, guid: 6936bd008877cf247b71d5ad2ddf584d, type: 2}
+    Amount: 10
+  rewardAmount: 25

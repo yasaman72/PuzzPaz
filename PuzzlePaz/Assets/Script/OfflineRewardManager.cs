@@ -95,7 +95,6 @@ public class OfflineRewardManager : MonoBehaviour
                     if (PlayerPrefs.GetInt("ActiveHearts") >= inGameManager.GetMaxHeart())
                     {
                         heartTimerTxt.text = "";
-                        Debug.Log("Has enough hearts!");
                         StopCoroutine("RewardTimer");
                         yield return null;
                     }

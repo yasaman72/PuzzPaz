@@ -47,6 +47,8 @@ public class LevelManager : MonoBehaviour
 
     public static bool finishedTheCurrentLevel;
 
+    public GameObject notEnoughHeartPopup;
+
     public void RestartLevel()
     {
         if (PlayerPrefs.GetInt("ActiveHearts") < 1)
@@ -56,6 +58,7 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
+            notEnoughHeartPopup.SetActive(true);
             Debug.Log("Not enough hearts!!");
             return;
         }
@@ -73,6 +76,7 @@ public class LevelManager : MonoBehaviour
 
         if(PlayerPrefs.GetInt("ActiveHearts") < 1)
         {
+            notEnoughHeartPopup.SetActive(true);
             Debug.Log("Not enough hearts!!");
             return;
         }

@@ -19,7 +19,7 @@ public class InGameManager : MonoBehaviour
     public Image[] heartSprites;
     public Sprite fullHeart, EmptyHeart;
     public int maxHeart;
-
+    public GameObject notEnoughHeartPopup;
 
     private void Start()
     {

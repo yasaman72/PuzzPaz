@@ -4,7 +4,7 @@ TextureImporter:
   fileIDToRecycleName:
     21300000: Tile Icons_0
     21300002: Tile Icons_1
-    21300004: tomato
+    21300004: gerdoo
     21300006: Baghali
     21300008: Tile Icons_4
     21300010: Balal
@@ -167,7 +167,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tomato
+      name: gerdoo
       rect:
         serializedVersion: 2
         x: 268

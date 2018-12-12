@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum ingredientEnum
 {
-    tomato = 0,
+    gerdoo = 0,
     balal = 1,
     laboo = 2,
     baghali = 3
