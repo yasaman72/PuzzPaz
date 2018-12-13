@@ -6,6 +6,6 @@ public class IAPMAnager : MonoBehaviour {
 
 	public void SendShopOpenEvent()
     {
-        GameAnalyticsManager.Instance.SendDesignEvents("Shop:OpenedShop");
+       GameAnalyticsManager.Instance.SendDesignEvents("Shop:OpenedShop");
     }
 }

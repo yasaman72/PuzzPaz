@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UnityEditor;
 
 public class GameData : MonoBehaviour
 {
@@ -10,10 +11,21 @@ public class GameData : MonoBehaviour
     public LevelManager levelManager;
     public GameMenuManager gameMenuManager;
 
-    private string dataFilePath = "/Data/PlayerData.json";
+    //private string dataFilePath = "PlayerData.json";
+    //string folderPath;
+    //string filePath;
 
     private void Start()
     {
+        //folderPath = (Application.platform == RuntimePlatform.Android ||
+        //    Application.platform == RuntimePlatform.IPhonePlayer ?
+        //    Application.persistentDataPath :
+        //    Application.dataPath) + "/myDataFolder/PlayerData.json";
+
+        //filePath = Path.Combine(Application.persistentDataPath, folderPath);
+
+        //Debug.Log("file Path: " + filePath);
+
         levelDatas = new List<LevelData>();
 
         for (int i = 0; i < levelManager.levels.Length; i++)
@@ -41,16 +53,16 @@ public class GameData : MonoBehaviour
         //    levelDatas[i].lvlState = 1;
         //}
 
-        if (PlayerPrefs.HasKey("SavedGame"))
+        if (PlayerPrefs.HasKey("dataJSON"))
         {
-            if (PlayerPrefs.GetInt("SavedGame") == 1)
-            {
-                LoadGame();
-            }
+            Debug.Log("loading the level.");
+            LoadGame();
         }
         else
         {
+            Debug.Log("start game from beginning.");
             levelDatas[0].lvlState = 0;
+            //ResetJSON();
         }
 
         gameMenuManager.MakeLevelNodes(levelManager.levels.Length);
@@ -96,15 +108,16 @@ public class GameData : MonoBehaviour
             if (PlayerPrefs.GetInt("CurrentLvl") < levelIndex + 1)
             {
                 PlayerPrefs.SetInt("CurrentLvl", levelIndex + 1);
-                Debug.Log("Setuped a new current level: " + levelIndex);
-                levelDatas[PlayerPrefs.GetInt("CurrentLvl")].lvlState = 0;
+                levelDatas[levelIndex + 1].lvlState = 0;
+                Debug.Log("Setuped a new current level: " + levelIndex + 1);
             }
+            //Debug.Log("old current level.");
         }
         else
         {
             PlayerPrefs.SetInt("CurrentLvl", 1);
-            Debug.Log("Setuped a new current level: " + levelIndex);
             levelDatas[1].lvlState = 0;
+            Debug.Log("Setuped a new current level: " + levelIndex);
         }
 
         levelDatas[levelIndex].lvlState = 1;
@@ -120,6 +133,8 @@ public class GameData : MonoBehaviour
 
     public void ResetJSON()
     {
+        //FileUtil.DeleteFileOrDirectory(filePath);
+        //Debug.Log("deleted file at : " + filePath);
         for (int i = 0; i < levelDatas.Count; i++)
         {
             levelDatas[i].lvlState = -1;
@@ -136,46 +151,51 @@ public class GameData : MonoBehaviour
 
     public void SaveGame()
     {
-        string filePath = Application.dataPath + dataFilePath;
         string json = "";
 
         //json += "[";
         for (int i = 0; i < levelDatas.Count; i++)
         {
-            json += JsonUtility.ToJson(levelDatas[i], true);
+            json += JsonUtility.ToJson(levelDatas[i], false);
             if (i < levelDatas.Count - 1)
-                json += "/";
+                json += '/';
         }
         //json += "]";
+        //json = JsonUtility.ToJson(levelDatas, false);
 
-        if (File.Exists(filePath))
-        {
-            File.WriteAllText(filePath, json);
-            if (!PlayerPrefs.HasKey("SavedGame"))
-            {
-                PlayerPrefs.SetInt("SavedGame", 1);
-                PlayerPrefs.Save();
-            }
-            //Debug.Log("Saved Data!!!");
-        }
+        PlayerPrefs.SetString("dataJSON", json);
+        Debug.Log("json content: " + json);
+        PlayerPrefs.Save();
+
+        Debug.Log("Saved Data!!!");
+        string temp = PlayerPrefs.GetString("dataJSON");
+        Debug.Log("JSON content: " + temp);
     }
 
     public void LoadGame()
     {
-        string filePath = Application.dataPath + dataFilePath;
-        if (File.Exists(filePath))
+        if (PlayerPrefs.HasKey("dataJSON"))
         {
-            string json = File.ReadAllText(filePath);
+            string json = PlayerPrefs.GetString("dataJSON");
             string[] jsonChunks = json.Split('/');
+
+            //Debug.Log("json content: " + json);
+            //Debug.Log("JSON chunks length: " + jsonChunks.Length);
 
             for (int i = 0; i < levelDatas.Count; i++)
             {
+                //Debug.Log(jsonChunks[i]);
                 levelDatas[i] = JsonUtility.FromJson<LevelData>(jsonChunks[i]);
             }
-            //Debug.Log("Loaded Data!!");
-        } else
+            //levelDatas = new List<LevelData>();
+            //levelDatas = JsonUtility.FromJson<List<LevelData>>(json);
+
+            Debug.Log("Loaded Data!!");
+            Debug.Log("JSON content: " + PlayerPrefs.GetString("dataJSON"));
+        }
+        else
         {
-            string errorMessage = "levelsData JSON file doesn't exist!";
+            string errorMessage = "levelsData JSON pref doesn't exist!";
             Debug.Log(errorMessage);
             GameAnalyticsManager.Instance.SendErrorEvent(5, errorMessage);
         }

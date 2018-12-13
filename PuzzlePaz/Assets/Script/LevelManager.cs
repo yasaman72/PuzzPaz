@@ -157,10 +157,10 @@ public class LevelManager : MonoBehaviour
 
     public void FinishedADish(int DishRewardAmount)
     {
-        Debug.Log("Reward Amount before:" + DishRewardAmount);
+        //Debug.Log("Reward Amount before:" + DishRewardAmount);
         levelRewardAmount += Mathf.FloorToInt(DishRewardAmount * (moodSlider.value + 0.3f));
-        Debug.Log("Order Reward Amount:" + Mathf.FloorToInt(DishRewardAmount * (moodSlider.value + 0.3f)));
-        Debug.Log("Reward Amount after:" + levelRewardAmount);
+        // Debug.Log("Order Reward Amount:" + Mathf.FloorToInt(DishRewardAmount * (moodSlider.value + 0.3f)));
+        // Debug.Log("Reward Amount after:" + levelRewardAmount);
         rewardGameObj.SetActive(true);
         rewardAmountTxt._rawText = (Mathf.FloorToInt(DishRewardAmount * (moodSlider.value + 0.3f))).ToString();
         rewardAmountTxt.enabled = false;
@@ -233,6 +233,8 @@ public class LevelManager : MonoBehaviour
             levelCountTxt.enabled = false;
             levelCountTxt.enabled = true;
 
+            gameData.SetUpNewPlayerLevelData(currentLevelIndex, gainedStars, levelRewardAmount);
+
             //Game Analytics progression data update
             GameAnalyticsManager.Instance.SendProgressionEvent(2, "world0", "level" + (currentLevelIndex + 1));
 
@@ -240,12 +242,9 @@ public class LevelManager : MonoBehaviour
             inGameManager.AddCurrency(levelRewardAmount, 0);
             GameAnalyticsManager.Instance.SendResourceEvent(1, "Coin", levelRewardAmount, "LevelReward", "LevelCoinReward");
 
-            gameData.SetUpNewPlayerLevelData(currentLevelIndex, gainedStars, levelRewardAmount);
         }
         else
         {
-            //Game Analytics progression data update
-            GameAnalyticsManager.Instance.SendProgressionEvent(3, "world 0", "level " + (currentLevelIndex + 1));
 
             inGameManager.ChangeHeartAmount(-1);
 
@@ -262,6 +261,8 @@ public class LevelManager : MonoBehaviour
 
                 finalGameOverObj.SetActive(true);
             }
+            //Game Analytics progression data update
+           GameAnalyticsManager.Instance.SendProgressionEvent(3, "world 0", "level " + (currentLevelIndex + 1));
         }
     }
 

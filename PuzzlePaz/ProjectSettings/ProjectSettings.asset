@@ -246,7 +246,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 5
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: E:/Projects/PuzzlePaz/PuzzlePaz/PuzzlePaz/user.keystore
+  AndroidKeystoreName: E:/My Game Projects/Casual Camp 2018/PuzzPaz_UP/PuzzlePaz/user.keystore
   AndroidKeyaliasName: puzzlepaz
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0

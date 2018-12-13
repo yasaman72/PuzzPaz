@@ -10,8 +10,12 @@ public class GameAnalyticsManager : MonoBehaviour
 
     private void Awake()
     {
-        GameAnalytics.Initialize();
         Instance = this;
+    }
+
+    private void Start()
+    {
+        GameAnalytics.Initialize();
     }
 
     /// <param name="progresionStatus">0: undefined, 1: Start, 2: Complete, 3: Fail</param>

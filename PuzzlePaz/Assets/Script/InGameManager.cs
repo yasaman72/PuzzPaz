@@ -32,18 +32,21 @@ public class InGameManager : MonoBehaviour
     public PersianText messageTextObject;
 
     private void Start()
-    {           
+    {
+        //GameAnalytics.Initialize();      
         
         //setuping player initial currencies
         if (!PlayerPrefs.HasKey("alreadyPlyaed"))
         {
+            Debug.Log("first time playing");
             PlayerPrefs.SetInt("alreadyPlyaed", 1);
+
             PlayerPrefs.SetInt("playerCoins", initialCoin);
             //PlayerPrefs.SetInt("playerGems", initialGem);
             PlayerPrefs.SetInt("ActiveHearts", maxHeart);
             PlayerPrefs.SetInt("soundState", 1);
             //setting player's dimention
-            GameAnalytics.SetCustomDimension01("MainGroup");
+            //GameAnalytics.SetCustomDimension01("MainGroup");
             PlayerPrefs.Save();
         }
 
@@ -55,19 +58,20 @@ public class InGameManager : MonoBehaviour
         //gemAmountTxt.enabled = false;
         //gemAmountTxt.enabled = true;
 
+        //change hearts visual
+        ChangeHeartAmount(0);
+
         //change sound state
         if (PlayerPrefs.GetInt("soundState") == 1)
         {
             AudioListener.pause = false;
             crossSign.SetActive(false);
-        } else if (PlayerPrefs.GetInt("soundState") == 0)
+        }
+        else if (PlayerPrefs.GetInt("soundState") == 0)
         {
             AudioListener.pause = true;
             crossSign.SetActive(true);
         }
-
-        //adding more hearts based on time passed should be here
-        ChangeHeartAmount(0);
 
         foreach (GameObject activateObj in activateThese)
         {
@@ -95,15 +99,16 @@ public class InGameManager : MonoBehaviour
     {
         gameData.SaveGame();
     }
-    //private void OnApplicationPause(bool pause)
-    //{
-    //    gameData.SaveGame();
-    //}
+    private void OnApplicationPause(bool pause)
+    {
+        if(pause)
+        gameData.SaveGame();
+    }
 
     public void ClearPlayerData()
     {
         PlayerPrefs.DeleteAll();
-        gameData.ResetJSON();
+        //gameData.ResetJSON();
         ResetCurrentScene();
     }
 
@@ -164,7 +169,7 @@ public class InGameManager : MonoBehaviour
 
     public void CheckIfNeedHeart()
     {
-        if (PlayerPrefs.GetInt("ActiveHearts") == maxHeart-1)
+        if (PlayerPrefs.GetInt("ActiveHearts") == maxHeart - 1)
         {
             Debug.Log("Want some heart?");
             offlineRewardManager.StartCoroutine("RewardTimer", 0);
