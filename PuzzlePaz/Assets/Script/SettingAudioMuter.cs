@@ -22,6 +22,7 @@ public class SettingAudioMuter : MonoBehaviour
             crossSign.SetActive(false);
             PlayerPrefs.SetInt("soundState", 1);
         }
+        PlayerPrefs.Save();
     }
 
 }

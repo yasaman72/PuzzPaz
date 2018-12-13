@@ -45,6 +45,7 @@ public class OfflineRewardManager : MonoBehaviour
         PlayerPrefs.SetInt("exitTime", DateTimeToUnixTimestamp(exitTime));
         //Debug.Log("Application ended at " + DateTimeToUnixTimestamp(exitTime) + " minutes long time.");
         PlayerPrefs.SetInt("rewardSecondsAlreadyPassed", ((RewardIntervalMinute - minutesToNextReward) * 60) + secondsPassedSinceGameStarted);
+        PlayerPrefs.Save();
     }
 
     public static int DateTimeToUnixTimestamp(System.DateTime dateTime)
@@ -65,10 +66,10 @@ public class OfflineRewardManager : MonoBehaviour
         else
         {
             Debug.Log("Not enough time passed.");
-        }       
+        }
 
         if (PlayerPrefs.GetInt("ActiveHearts") < inGameManager.GetMaxHeart())
-            StartCoroutine("RewardTimer", allSecondsPassed % (RewardIntervalMinute*60));
+            StartCoroutine("RewardTimer", allSecondsPassed % (RewardIntervalMinute * 60));
     }
 
 
@@ -107,4 +108,12 @@ public class OfflineRewardManager : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
     }
+
+    public void stopGivingHeart()
+    {
+        heartTimerTxt.text = "";
+        StopCoroutine("RewardTimer");
+    }
 }
+
+

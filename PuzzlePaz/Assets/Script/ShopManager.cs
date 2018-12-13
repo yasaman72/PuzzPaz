@@ -7,6 +7,7 @@ public class ShopManager : MonoBehaviour
 {
 
     public InGameManager inGameManager;
+    public GameObject loadingPopup;
 
 #if UNITY_ANDROID
     //public enum SkuNames
@@ -29,6 +30,7 @@ public class ShopManager : MonoBehaviour
     public void OnBuyCoinPackBtnClicked(string sku)
     {
         BazaarIAB.purchaseProduct(sku);
+        loadingPopup.SetActive(true);
     }
 
     #region event listeners
@@ -71,16 +73,19 @@ public class ShopManager : MonoBehaviour
     void billingSupportedEvent()
     {
         Debug.Log("billingSupportedEvent");
+        loadingPopup.SetActive(false);
     }
 
     void billingNotSupportedEvent(string error)
     {
         Debug.Log("billingNotSupportedEvent: " + error);
+        loadingPopup.SetActive(false);
     }
 
     void queryInventorySucceededEvent(List<BazaarPurchase> purchases, List<BazaarSkuInfo> skus)
     {
         Debug.Log(string.Format("queryInventorySucceededEvent. total purchases: {0}, total skus: {1}", purchases.Count, skus.Count));
+        loadingPopup.SetActive(false);
 
         for (int i = 0; i < purchases.Count; ++i)
         {
@@ -98,11 +103,13 @@ public class ShopManager : MonoBehaviour
     void queryInventoryFailedEvent(string error)
     {
         Debug.Log("queryInventoryFailedEvent: " + error);
+        loadingPopup.SetActive(false);
     }
 
     private void querySkuDetailsSucceededEvent(List<BazaarSkuInfo> skus)
     {
         Debug.Log(string.Format("querySkuDetailsSucceededEvent. total skus: {0}", skus.Count));
+        loadingPopup.SetActive(false);
 
         for (int i = 0; i < skus.Count; ++i)
         {
@@ -113,11 +120,13 @@ public class ShopManager : MonoBehaviour
     private void querySkuDetailsFailedEvent(string error)
     {
         Debug.Log("querySkuDetailsFailedEvent: " + error);
+        loadingPopup.SetActive(false);
     }
 
     private void queryPurchasesSucceededEvent(List<BazaarPurchase> purchases)
     {
         Debug.Log(string.Format("queryPurchasesSucceededEvent. total purchases: {0}", purchases.Count));
+        loadingPopup.SetActive(false);
 
         for (int i = 0; i < purchases.Count; ++i)
         {
@@ -128,26 +137,27 @@ public class ShopManager : MonoBehaviour
     private void queryPurchasesFailedEvent(string error)
     {
         Debug.Log("queryPurchasesFailedEvent: " + error);
+        loadingPopup.SetActive(false);
     }
 
     void purchaseSucceededEvent(BazaarPurchase purchase)
     {
         Debug.Log("purchase Succeeded Event: " + purchase);
-
+        loadingPopup.SetActive(false);
         BazaarIAB.consumeProduct(purchase.ProductId);        
     }
-
 
     void purchaseFailedEvent(string error)
     {
         Debug.Log("purchaseFailedEvent: " + error);
-
+        loadingPopup.SetActive(false);
         //todo: inform the player about the purchase fail in a popup
     }
 
     void consumePurchaseSucceededEvent(BazaarPurchase purchase)
     {
         Debug.Log("consumePurchaseSucceededEvent: " + purchase);
+        loadingPopup.SetActive(false);
 
         switch (purchase.ProductId)
         {
@@ -184,6 +194,7 @@ public class ShopManager : MonoBehaviour
 
     void consumePurchaseFailedEvent(string error)
     {
+        loadingPopup.SetActive(false);
         Debug.Log("consumePurchaseFailedEvent: " + error);
         inGameManager.ShowMessageBox("متاسفانه مشکلی در خرید پیش آمد.");
         //todo: inform the player about the purchase fail in a popup

@@ -15,5 +15,5 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 525a4c3af724c344ead48f1a93aa30c4, type: 3}
   ingredients:
   - ingredient: {fileID: 11400000, guid: 6936bd008877cf247b71d5ad2ddf584d, type: 2}
-    Amount: 10
-  rewardAmount: 10
+    Amount: 7
+  rewardAmount: 7

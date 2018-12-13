@@ -104,7 +104,7 @@ public class GameData : MonoBehaviour
         {
             PlayerPrefs.SetInt("CurrentLvl", 1);
             Debug.Log("Setuped a new current level: " + levelIndex);
-            levelDatas[PlayerPrefs.GetInt("CurrentLvl")].lvlState = 0;
+            levelDatas[1].lvlState = 0;
         }
 
         levelDatas[levelIndex].lvlState = 1;
@@ -115,6 +115,7 @@ public class GameData : MonoBehaviour
             levelDatas[levelIndex].starsAmount = stars;
 
         gameMenuManager.SetUpLevelStarsAndShape(levelIndex, stars, false);
+        PlayerPrefs.Save();
     }
 
     public void ResetJSON()
@@ -153,6 +154,7 @@ public class GameData : MonoBehaviour
             if (!PlayerPrefs.HasKey("SavedGame"))
             {
                 PlayerPrefs.SetInt("SavedGame", 1);
+                PlayerPrefs.Save();
             }
             //Debug.Log("Saved Data!!!");
         }

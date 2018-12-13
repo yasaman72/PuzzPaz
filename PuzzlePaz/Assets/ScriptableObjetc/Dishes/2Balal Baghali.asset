@@ -18,4 +18,4 @@ MonoBehaviour:
     Amount: 8
   - ingredient: {fileID: 11400000, guid: 4b08d8a912724d746a00748e96f84140, type: 2}
     Amount: 8
-  rewardAmount: 25
+  rewardAmount: 15

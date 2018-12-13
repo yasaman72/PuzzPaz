@@ -29,7 +29,7 @@ public class InGameManager : MonoBehaviour
     public Sprite[] currenciesImages;
     [Space]
     public GameObject messagePopup;
-    public Text messageTextObject;
+    public PersianText messageTextObject;
 
     private void Start()
     {              
@@ -43,6 +43,7 @@ public class InGameManager : MonoBehaviour
             PlayerPrefs.SetInt("soundState", 1);
             //setting player's dimention
             GameAnalytics.SetCustomDimension01("MainGroup");
+            PlayerPrefs.Save();
         }
 
         //set currencies UI
@@ -116,6 +117,7 @@ public class InGameManager : MonoBehaviour
         //gemAmountTxt._rawText = PlayerPrefs.GetInt("playerGems").ToString();
         //gemAmountTxt.enabled = false;
         //gemAmountTxt.enabled = true;
+        PlayerPrefs.Save();
     }
 
     public void ShowCurrencyPopup(int amount, int type)
@@ -128,7 +130,9 @@ public class InGameManager : MonoBehaviour
     public void ShowMessageBox(string messageString)
     {
         messagePopup.SetActive(true);
-        messageTextObject.text = messageString;
+        messageTextObject._rawText = messageString;
+        messageTextObject.enabled = false;
+        messageTextObject.enabled = true;
     }
 
     public void ChangeHeartAmount(int heartAmount)
@@ -140,6 +144,7 @@ public class InGameManager : MonoBehaviour
         if (currentHeart + heartAmount >= maxHeart)
         {
             PlayerPrefs.SetInt("ActiveHearts", maxHeart);
+            offlineRewardManager.stopGivingHeart();
         }
         else
         {
@@ -153,6 +158,7 @@ public class InGameManager : MonoBehaviour
             if (i < PlayerPrefs.GetInt("ActiveHearts"))
                 heartSprites[i].sprite = fullHeart;
         }
+        PlayerPrefs.Save();
     }
 
     public void CheckIfNeedHeart()

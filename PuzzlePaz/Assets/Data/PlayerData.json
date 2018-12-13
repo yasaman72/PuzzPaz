@@ -1,33 +1,33 @@
 {
     "LevelIndex": 0,
-    "score": 11,
+    "score": 21,
     "starsAmount": 3,
     "lvlState": 1
 }/{
     "LevelIndex": 1,
-    "score": 34,
-    "starsAmount": 1,
-    "lvlState": 1
+    "score": 0,
+    "starsAmount": 0,
+    "lvlState": 0
 }/{
     "LevelIndex": 2,
-    "score": 12,
-    "starsAmount": 1,
-    "lvlState": 1
+    "score": 0,
+    "starsAmount": 0,
+    "lvlState": -1
 }/{
     "LevelIndex": 3,
-    "score": 7,
-    "starsAmount": 1,
-    "lvlState": 1
+    "score": 0,
+    "starsAmount": 0,
+    "lvlState": -1
 }/{
     "LevelIndex": 4,
-    "score": 58,
-    "starsAmount": 2,
-    "lvlState": 1
+    "score": 0,
+    "starsAmount": 0,
+    "lvlState": -1
 }/{
     "LevelIndex": 5,
     "score": 0,
     "starsAmount": 0,
-    "lvlState": 0
+    "lvlState": -1
 }/{
     "LevelIndex": 6,
     "score": 0,

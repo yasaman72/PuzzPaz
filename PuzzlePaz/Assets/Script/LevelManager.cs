@@ -33,7 +33,7 @@ public class LevelManager : MonoBehaviour
     public PersianText moveAmountText;
     public PersianText coinAmountText;
     private int usedMoves;
-    private int rewardAmount;
+    private int levelRewardAmount;
     private int[] levelCoinGoals = { 0, 0, 0 };
     private bool wonTheLevel;
     [Space, Header("Effects")]
@@ -73,10 +73,20 @@ public class LevelManager : MonoBehaviour
         if (gameData.levelDatas[levelIndex].lvlState < 0)
         {
             Debug.Log("This level is not available!!");
+            inGameManager.ShowMessageBox("هنوز این مرحله رو باز نکردید و نمی تونید بازیش کنید.");
             return;
         }
+        else if (gameData.levelDatas[levelIndex].lvlState > 0)
+        {
+            if (gameData.levelDatas[levelIndex].starsAmount == 3)
+            {
+                Debug.Log("You have finished the level.");
+                inGameManager.ShowMessageBox("این مرحله رو سه ستاره و تموم کرده اید.");
+                return;
+            }
+        }
 
-        if(PlayerPrefs.GetInt("ActiveHearts") < 1)
+        if (PlayerPrefs.GetInt("ActiveHearts") < 1)
         {
             notEnoughHeartPopup.SetActive(true);
             Debug.Log("Not enough hearts!!");
@@ -121,7 +131,7 @@ public class LevelManager : MonoBehaviour
         }
 
         levelGoalSlider.value = 0;
-        rewardAmount = 0;
+        levelRewardAmount = 0;
 
         usedMoves = 0;
         wonTheLevel = false;
@@ -147,21 +157,21 @@ public class LevelManager : MonoBehaviour
 
     public void FinishedADish(int DishRewardAmount)
     {
-        Debug.Log("Reward Amount before:" + rewardAmount);
-        rewardAmount += Mathf.FloorToInt(DishRewardAmount * (moodSlider.value + 0.3f));
+        Debug.Log("Reward Amount before:" + DishRewardAmount);
+        levelRewardAmount += Mathf.FloorToInt(DishRewardAmount * (moodSlider.value + 0.3f));
         Debug.Log("Order Reward Amount:" + Mathf.FloorToInt(DishRewardAmount * (moodSlider.value + 0.3f)));
-        Debug.Log("Reward Amount after:" + rewardAmount);
+        Debug.Log("Reward Amount after:" + levelRewardAmount);
         rewardGameObj.SetActive(true);
         rewardAmountTxt._rawText = (Mathf.FloorToInt(DishRewardAmount * (moodSlider.value + 0.3f))).ToString();
         rewardAmountTxt.enabled = false;
         rewardAmountTxt.enabled = true;
         rewardParticleSystem.Play();
 
-        coinAmountText._rawText = rewardAmount.ToString();
+        coinAmountText._rawText = levelRewardAmount.ToString();
         coinAmountText.enabled = false;
         coinAmountText.enabled = true;
 
-        levelGoalSlider.value = (float)rewardAmount / (float)levelCoinGoals[2];
+        levelGoalSlider.value = (float)levelRewardAmount / (float)levelCoinGoals[2];
 
         //setting star shapes if coin amount reach them
         if (levelGoalSlider.value >= 1)
@@ -215,7 +225,7 @@ public class LevelManager : MonoBehaviour
             for (int i = 0; i < gainedStars; i++)
                 gameOverStars[i].sprite = gainedStar;
 
-            overRewardTxt._rawText = rewardAmount.ToString();
+            overRewardTxt._rawText = levelRewardAmount.ToString();
             overRewardTxt.enabled = false;
             overRewardTxt.enabled = true;
 
@@ -227,10 +237,10 @@ public class LevelManager : MonoBehaviour
             GameAnalyticsManager.Instance.SendProgressionEvent(2, "world0", "level" + (currentLevelIndex + 1));
 
             //adding level reward coins
-            inGameManager.AddCurrency(rewardAmount, 0);
-            GameAnalyticsManager.Instance.SendResourceEvent(1, "Coin", rewardAmount, "LevelReward", "LevelCoinReward");
+            inGameManager.AddCurrency(levelRewardAmount, 0);
+            GameAnalyticsManager.Instance.SendResourceEvent(1, "Coin", levelRewardAmount, "LevelReward", "LevelCoinReward");
 
-            gameData.SetUpNewPlayerLevelData(currentLevelIndex, gainedStars, rewardAmount);
+            gameData.SetUpNewPlayerLevelData(currentLevelIndex, gainedStars, levelRewardAmount);
         }
         else
         {
@@ -262,6 +272,7 @@ public class LevelManager : MonoBehaviour
             GameAnalyticsManager.Instance.SendDesignEvents("InGame:Continue:UsedContinue");
 
             PlayerPrefs.SetInt("playerCoins", PlayerPrefs.GetInt("playerCoins") - continuePrice);
+            PlayerPrefs.Save();
             inGameManager.ChangeHeartAmount(1);
 
             usedMoves -= moreMovesAmount;

@@ -15,17 +15,18 @@ public class NoLifeManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("playerCoins") >= requiredCoin)
         {
-            PlayerPrefs.SetInt("playerCoins", PlayerPrefs.GetInt("playerCoins") - requiredCoin);
+            inGameManager.AddCurrency(-requiredCoin, 0);
             inGameManager.ChangeHeartAmount(inGameManager.maxHeart);
         }
         else
         {
+            inGameManager.ShowMessageBox("سکه های شما کافی نمی باشد. می توانید از فروشگاه سکه تهیه کنید.");
             shopPopup.SetActive(true);
         }
     }
 
     public void onAdWatch()
     {
-        AdsManager.ShowTapsellVideoAd("5c1113d6a4973c000144cbc2");
+        adsManager.ShowTapsellVideoAd("5c1113d6a4973c000144cbc2");
     }
 }

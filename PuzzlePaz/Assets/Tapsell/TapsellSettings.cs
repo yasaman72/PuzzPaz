@@ -15,11 +15,13 @@ namespace TapsellSDK.Editor {
 		public static void setLatestPluginVersion(string newVersion)
 		{
 			PlayerPrefs.SetString ("TapsellLatestVersion", newVersion);
-		}
+            PlayerPrefs.Save();
+        }
 
 		public static string getLatestPluginVersion()
 		{
 			return PlayerPrefs.GetString ("TapsellLatestVersion", null);
-		}
+            PlayerPrefs.Save();
+        }
 	}
 }

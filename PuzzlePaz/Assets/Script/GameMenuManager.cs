@@ -49,14 +49,15 @@ public class GameMenuManager : MonoBehaviour
             levelNodes[levelIndex].transform.GetChild(0).GetComponent<Image>().color = passed;
             levelNodes[levelIndex].transform.GetChild(1).gameObject.SetActive(false);
 
-            if (levelIndex + 1 < myLevelCount)
+            if (levelIndex + 1 == PlayerPrefs.GetInt("CurrentLvl"))
             {
-                levelNodes[PlayerPrefs.GetInt("CurrentLvl")].transform.GetChild(0).GetComponent<Image>().color = current;
+                levelNodes[levelIndex + 1].transform.GetChild(0).GetComponent<Image>().color = current;
                 levelNodes[levelIndex + 1].transform.GetChild(1).gameObject.SetActive(true);
                 levelNodes[levelIndex + 1].transform.GetChild(2).gameObject.SetActive(false);
             }
         }
 
+        //set the stars
         GameObject starsHolder = levelNodes[levelIndex].transform.GetChild(2).gameObject;
         starsHolder.SetActive(true);
 
