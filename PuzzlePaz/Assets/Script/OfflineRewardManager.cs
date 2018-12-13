@@ -45,7 +45,6 @@ public class OfflineRewardManager : MonoBehaviour
         PlayerPrefs.SetInt("exitTime", DateTimeToUnixTimestamp(exitTime));
         //Debug.Log("Application ended at " + DateTimeToUnixTimestamp(exitTime) + " minutes long time.");
         PlayerPrefs.SetInt("rewardSecondsAlreadyPassed", ((RewardIntervalMinute - minutesToNextReward) * 60) + secondsPassedSinceGameStarted);
-        PlayerPrefs.Save();
     }
 
     public static int DateTimeToUnixTimestamp(System.DateTime dateTime)

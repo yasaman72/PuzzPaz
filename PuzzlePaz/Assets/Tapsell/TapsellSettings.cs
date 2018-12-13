@@ -21,7 +21,6 @@ namespace TapsellSDK.Editor {
 		public static string getLatestPluginVersion()
 		{
 			return PlayerPrefs.GetString ("TapsellLatestVersion", null);
-            PlayerPrefs.Save();
         }
 	}
 }

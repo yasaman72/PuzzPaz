@@ -32,7 +32,8 @@ public class InGameManager : MonoBehaviour
     public PersianText messageTextObject;
 
     private void Start()
-    {              
+    {           
+        
         //setuping player initial currencies
         if (!PlayerPrefs.HasKey("alreadyPlyaed"))
         {
