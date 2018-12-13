@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using GameAnalyticsSDK;
-using TapsellSDK;
-
 
 public class InGameManager : MonoBehaviour
 {
@@ -22,12 +20,19 @@ public class InGameManager : MonoBehaviour
     public int maxHeart;
     public GameObject notEnoughHeartPopup;
 
+
     public GameObject crossSign;
+    [Space]
+    public GameObject gainedPopup;
+    public Image gainedCurrencyImage;
+    public PersianText gainedAmountText;
+    public Sprite[] currenciesImages;
+    [Space]
+    public GameObject messagePopup;
+    public Text messageTextObject;
 
     private void Start()
-    {
-        GameAnalytics.Initialize();        
-
+    {              
         //setuping player initial currencies
         if (!PlayerPrefs.HasKey("alreadyPlyaed"))
         {
@@ -111,6 +116,19 @@ public class InGameManager : MonoBehaviour
         //gemAmountTxt._rawText = PlayerPrefs.GetInt("playerGems").ToString();
         //gemAmountTxt.enabled = false;
         //gemAmountTxt.enabled = true;
+    }
+
+    public void ShowCurrencyPopup(int amount, int type)
+    {
+        gainedPopup.SetActive(true);
+        gainedAmountText.text = amount.ToString();
+        gainedCurrencyImage.sprite = currenciesImages[type];
+    }
+
+    public void ShowMessageBox(string messageString)
+    {
+        messagePopup.SetActive(true);
+        messageTextObject.text = messageString;
     }
 
     public void ChangeHeartAmount(int heartAmount)

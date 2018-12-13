@@ -10,6 +10,7 @@ public class GameAnalyticsManager : MonoBehaviour
 
     private void Awake()
     {
+        GameAnalytics.Initialize();
         Instance = this;
     }
 

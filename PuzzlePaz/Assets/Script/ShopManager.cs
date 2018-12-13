@@ -5,6 +5,9 @@ using BazaarPlugin;
 
 public class ShopManager : MonoBehaviour
 {
+
+    public InGameManager inGameManager;
+
 #if UNITY_ANDROID
     //public enum SkuNames
     //{
@@ -131,17 +134,9 @@ public class ShopManager : MonoBehaviour
     {
         Debug.Log("purchase Succeeded Event: " + purchase);
 
-        BazaarIAB.consumeProduct(purchase.ProductId);
-
-        switch (purchase.ProductId)
-        {
-            case "Coin_100":
-                {
-                    //todo: give player the coins...
-                    break;
-                }
-        }
+        BazaarIAB.consumeProduct(purchase.ProductId);        
     }
+
 
     void purchaseFailedEvent(string error)
     {
@@ -153,11 +148,45 @@ public class ShopManager : MonoBehaviour
     void consumePurchaseSucceededEvent(BazaarPurchase purchase)
     {
         Debug.Log("consumePurchaseSucceededEvent: " + purchase);
+
+        switch (purchase.ProductId)
+        {
+            case "Coin_1":
+                {
+                    inGameManager.AddCurrency(500, 0);
+                    inGameManager.ShowCurrencyPopup(500, 0);
+                    //todo: give player the coins...
+                    break;
+                }
+            case "Coin_2":
+                {
+                    inGameManager.AddCurrency(2000, 0);
+                    inGameManager.ShowCurrencyPopup(2000, 0);
+                    //todo: give player the coins...
+                    break;
+                }
+            case "Coin_3":
+                {
+                    inGameManager.AddCurrency(8000, 0);
+                    inGameManager.ShowCurrencyPopup(8000, 0);
+                    //todo: give player the coins...
+                    break;
+                }
+            case "Coin_4":
+                {
+                    inGameManager.AddCurrency(20000, 0);
+                    inGameManager.ShowCurrencyPopup(20000, 0);
+                    //todo: give player the coins...
+                    break;
+                }
+        }
     }
 
     void consumePurchaseFailedEvent(string error)
     {
         Debug.Log("consumePurchaseFailedEvent: " + error);
+        inGameManager.ShowMessageBox("متاسفانه مشکلی در خرید پیش آمد.");
+        //todo: inform the player about the purchase fail in a popup
     }
     #endregion
 
