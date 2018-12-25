@@ -2,19 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameAnalyticsSDK;
+using GameAnalyticsSDK.Events;
 
 public class GameAnalyticsManager : MonoBehaviour
 {
 
-    public static GameAnalyticsManager Instance;
-
-    private void Awake()
+    private static GameAnalyticsManager instance = null;
+    public static GameAnalyticsManager Instance
     {
-        Instance = this;
+        get
+        {
+            if (instance == null) instance = FindObjectOfType<GameAnalyticsManager>();
+            return instance;
+        }
+    }
+
+    public void Awake()
+    {
+        //Check if there is an existing instance of this object
+        if (instance && instance != this)
+            DestroyImmediate(gameObject); //Delete duplicate
+        else
+        {
+            instance = this; //Make this object the only instance
+            DontDestroyOnLoad(gameObject); //Set as do not destroy
+        }
     }
 
     private void Start()
     {
+        Application.logMessageReceived += GA_Debug.HandleLog;
         GameAnalytics.Initialize();
     }
 

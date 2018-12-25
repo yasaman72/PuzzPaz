@@ -25,23 +25,23 @@ MonoBehaviour:
   UserMessagesFailed: 0
   CustomArea: 
   gameKey:
-  - 9fed4ad20a51d2be5ac69fd2bc6b8a29
+  - a06d5e959fdf816cbbc3d3c9de779533
   secretKey:
-  - 29b0b0f83525b2ffb5ec94e0f8a710a83325d97b
+  - 460079f2d4593b55c7f606bfbc93af57c6011859
   Build:
-  - 0.1
+  - 0.6
   SelectedPlatformStudio:
-  - test
+  - Acid Green Games
   SelectedPlatformGame:
-  - Puzzle Paz
-  SelectedPlatformGameID: 52f80000
-  SelectedStudio: 01000000
-  SelectedGame: 01000000
+  - PuzzlePaz
+  SelectedPlatformGameID: 75fd0000
+  SelectedStudio: 02000000
+  SelectedGame: 02000000
   NewVersion: 
   Changes: 
   SignUpOpen: 0
   StudioName: 
-  GameName: 
+  GameName: puzzlepaz
   EmailGA: y.farazan@gmail.com
   IntroScreen: 0
   InfoLogEditor: 1
@@ -85,7 +85,7 @@ MonoBehaviour:
   iosIcon: {fileID: 0}
   macIcon: {fileID: 0}
   windowsPhoneIcon: {fileID: 0}
-  UsePlayerSettingsBuildNumber: 0
+  UsePlayerSettingsBuildNumber: 1
   SubmitErrors: 1
   MaxErrorCount: 10
   SubmitFpsAverage: 1

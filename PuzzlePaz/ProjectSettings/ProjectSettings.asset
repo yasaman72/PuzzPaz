@@ -120,7 +120,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.2
+  bundleVersion: 0.6
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -154,10 +154,10 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.acidgreengames.puzzlepaz
+    Android: com.agg.puzzlepaz
     Standalone: com.Company.ProductName
   buildNumber: {}
-  AndroidBundleVersionCode: 1
+  AndroidBundleVersionCode: 6
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 26
   AndroidPreferredInstallLocation: 0
@@ -246,7 +246,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 5
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: E:/My Game Projects/Casual Camp 2018/PuzzPaz_UP/PuzzlePaz/user.keystore
+  AndroidKeystoreName: E:/My Game Projects/Casual Camp 2018/PuzzPaz_UP/PuzzlePaz/Assets/AGG.keystore
   AndroidKeyaliasName: puzzlepaz
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0

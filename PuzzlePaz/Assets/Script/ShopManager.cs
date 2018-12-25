@@ -20,7 +20,7 @@ public class ShopManager : MonoBehaviour
 
     private void Start()
     {
-        string key = "MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwCs/topXMZorj7EhSkUjYwnSerOb0CfPHDyNNoMEhN01RTEUiVz8AoDzWVgU64LIjZHqlP8Y4mlID1CisAgC23pcQaNgwGlBJJdZiynzIYOe44W1bObJ3e0C1IN5dyOyT/tbE2S1xvbTVx1YyWA4QYo5LPcxQ1yJBIvfhio19aIzqYx9GVrVCBZXodQyINRCnnBSSwZ1jiSBrQN1EocGU5mCyRMH3MBHZa/GAb+vmsCAwEAAQ==";
+        string key = "MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwDU4vrRbWfev5hVh2Ms9wmk8SfTSBmqH8MmwSWyDqC6NSFLKwLIDZQ9D62iwpnA+3GUi/g7IXR5Bsr2feLp1pGYVXciMc0AO6hzF6VVin7RlIoxLFiZ2dyX1EMWwS1kOsideNuiRZ4XMW+LCQgqaG63wNyB0N0cX6dwjwwAkRjvY85IdtCXsIO/hBObGFW+UhWUMbrGmKfRkFwUoQbNJC3yM6YYAcXnvgnlqYmJ+2kCAwEAAQ==";
         BazaarIAB.init(key);
 
         //SkuNamesDictionary = new Dictionary<SkuNames, string>();
